@@ -1,0 +1,46 @@
+{
+   "name": "lovestar-backend",
+   "version": "1.0.0",
+   "description": "A food ordering app for an ND graduate, built with express and TypeScript",
+   "main": "index.ts",
+   "engines": {
+      "node": ">=20.0.0"
+   },
+   "scripts": {
+      "dev": "nodemon --watch './**/*.ts' --exec ts-node index.ts",
+      "build": "tsc",
+      "start": "node dist/index.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/dev-Bambam/foodie.git"
+   },
+   "author": "Bambam",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/dev-Bambam/foodie/issues"
+   },
+   "homepage": "https://github.com/dev-Bambam/foodie#readme",
+   "dependencies": {
+      "@sinclair/typebox": "^0.34.33",
+      "ajv": "^8.17.1",
+      "ajv-formats": "^3.0.1",
+      "bcryptjs": "^3.0.2",
+      "cors": "^2.8.5",
+      "dotenv": "^16.5.0",
+      "express": "^5.1.0",
+      "jsonwebtoken": "^9.0.2",
+      "mongoose": "^8.15.1",
+      "typebox": "^0.0.1",
+      "typescript": "^5.8.3"
+   },
+   "devDependencies": {
+      "@types/cors": "^2.8.19",
+      "@types/express": "^5.0.3",
+      "@types/jsonwebtoken": "^9.0.10",
+      "@types/node": "^24.0.3",
+      "nodemon": "^3.1.10",
+      "ts-node": "^10.9.2"
+   }
+}
