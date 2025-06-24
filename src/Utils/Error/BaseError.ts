@@ -2,11 +2,12 @@ class BaseError extends Error {
     constructor(
         public message: string,
         public statusCode: number,
-        public status: string,
         public type: string,
+        public status?: string,
         public isOperational = true
     ) {
         super(message)
+        this.status = 'error'
         Error.captureStackTrace(this, this.constructor)
     }
 }
