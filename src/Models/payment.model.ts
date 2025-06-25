@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IPayment } from "../../Interface/all.int";
+import { IPayment } from "../Interface/all.int";
 
 const paymentSchema = new Schema<IPayment>({
    orderId: { type: Schema.Types.ObjectId, ref: "Order", required: true },

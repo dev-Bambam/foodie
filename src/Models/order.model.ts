@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IOrder } from "../../Interface/all.int";
+import { IOrder } from "../Interface/all.int";
 const orderSchema = new Schema<IOrder>(
    {
       userId: { type: Schema.Types.ObjectId, ref: "User", required: true },

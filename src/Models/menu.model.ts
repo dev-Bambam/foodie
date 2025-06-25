@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
-import { IMenu } from '../../Interface/all.int'
+import { IMenu } from '../Interface/all.int'
 
 const menuSchema = new Schema<IMenu>({
    name: { type: String, required: true },
