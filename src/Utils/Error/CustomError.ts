@@ -7,6 +7,12 @@ export class NotFoundError extends BaseError{
     }
 }
 
+export class BadRequestError extends BaseError{
+    constructor(public message:string, public type:string) {
+        super(message, 400, type)
+    }
+}
+
 export class ValidationError extends BaseError{
     constructor(public error:ErrorObject[]) {
         super('Invalid request body', 400,'VALIDATION_ERR')
