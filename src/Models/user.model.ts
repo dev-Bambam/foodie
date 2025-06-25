@@ -1,4 +1,4 @@
-import { IUser } from "../Interface/all.int";
+import { IUser } from "./../api/user/types/user.types";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
