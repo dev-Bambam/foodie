@@ -27,7 +27,6 @@ export interface IAddress {
    state: string;
 }
 
-
 export interface ICustomer {
    userId: Types.ObjectId | unknown;
    name: string;
