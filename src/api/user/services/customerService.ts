@@ -1,10 +1,10 @@
 import { BadRequestError, NotFoundError } from "../../../Utils/Error/CustomError";
 import {
-   ICustomer,
+   TCustomer,
    ICustomerService,
-   ILoginInput,
-   IRegisterInput,
-   IUserRepository
+   TLoginInput,
+   TCustomerRegisterationInput,
+   IUserRepository,
 } from "../types/user.types";
 import { compare } from "bcryptjs";
 import { generateToken } from "../../../Utils/token/jwt";
@@ -12,30 +12,27 @@ import { generateToken } from "../../../Utils/token/jwt";
 class CustomerService implements ICustomerService {
    constructor(private userRepository: IUserRepository) {}
 
-   async register(input: IRegisterInput): Promise<ICustomer> {
+   async register(customer: TCustomerRegisterationInput): Promise<TCustomer> {
       // check if user already exist
-      const userExist = await this.userRepository.findByEmail(input.email);
+      const userExist = await this.userRepository.findByEmail(customer.email);
       if (userExist) {
          throw new BadRequestError("User already registered", "DUPLICATE_USER_ERR");
       }
-      const user = await this.userRepository.create({
-         ...input,
-         role: "customer",
-      });
-       const token = generateToken({userId: user.id, role:'customer'})
+      const newCustomer = await this.userRepository.create(customer);
+      const token = generateToken({ userId: newCustomer.id, role: "customer" });
 
       return {
-         userId: user._id,
-         name: user.name,
-         email: user.email,
-         role: "customer",
-         phone: user.phone,
-          address: user.address,
-         token
+         id: newCustomer._id,
+         name: newCustomer.name,
+         email: newCustomer.email,
+         role: newCustomer.role as 'customer',
+         phone: newCustomer.phone,
+         address: newCustomer.address,
+         token,
       };
    }
 
-   async login(input: ILoginInput): Promise<{ token: string }> {
+   async login(input: TLoginInput): Promise<{ token: string }> {
       const user = await this.userRepository.findByEmail(input.email);
       if (!user) {
          throw new NotFoundError();

@@ -1,19 +1,7 @@
-import mongoose, {Document} from "mongoose";
+import mongoose from "mongoose";
+import { IUser } from "../api/user/types/user.types";
 import bcrypt from "bcryptjs";
 
-export interface IUser extends Document{
-   id: mongoose.Types.ObjectId
-   name: string
-   email: string
-   password: string
-   role: string
-   phone: string
-   address?: {
-      street: string
-      city: string
-      state: string
-   }
-}
 // User Schema
 const userSchema = new mongoose.Schema<IUser>(
    {

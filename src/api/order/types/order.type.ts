@@ -1,5 +1,5 @@
 import { Document, Types } from "mongoose";
-import { IAddress } from "../../user/types/user.types";
+import { TAddress } from "../../user/types/user.types";
 
 export interface IOrder extends Document {
    userId: Types.ObjectId;
@@ -10,10 +10,7 @@ export interface IOrder extends Document {
    }>;
    totalPrice: number;
    status: "pending" | "confirmed" | "delivered" | "cancelled";
-   deliveryAddress:IAddress
+   deliveryAddress:TAddress
 }
 
-export interface IPlaceOrderInput {
-   items: { menuId: string; quantity: number }[];
-   deliveryAddress: IAddress;
-}
+export type TPlaceOrderInput = Pick<IOrder, 'userId'|'items' |'totalPrice' |'deliveryAddress'> & {status:'pending'}

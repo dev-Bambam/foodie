@@ -1,11 +1,5 @@
-import { IUser } from "../../../Models/user.model";
-import { Types } from "mongoose";
-import { IRegisterInput } from "../types/user.types";
+import { IUserRepository } from "../types/user.types";
+import User from "../../../Models/user.model";
+import { IUser } from "../types/user.types";
 
-interface IUserRepository {
-   create(input: IRegisterInput): Promise<IUser>;
-   findByEmail(email: string): Promise<IUser | null>;
-   findById(userId: Types.ObjectId): Promise<IUser | null>;
-}
-
-export { IUserRepository };
+export class UserRepository implements IUserRepository{}
