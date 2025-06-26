@@ -1,20 +1,19 @@
-import mongoose, { Document } from "mongoose";
+import { Document, Types } from "mongoose";
+import { IAddress } from "../../user/types/user.types";
 
 export interface IOrder extends Document {
-   userId: mongoose.Types.ObjectId;
+   userId: Types.ObjectId;
    items: Array<{
-      menuId: mongoose.Types.ObjectId;
+      menuId: Types.ObjectId;
       quantity: number;
       price: number;
    }>;
    totalPrice: number;
    status: "pending" | "confirmed" | "delivered" | "cancelled";
-   deliveryAddress: {
-      street: string;
-      city: string;
-      state: string;
-      zipCode: string;
-   };
-   createdAt: Date;
-   updatedAt: Date;
+   deliveryAddress:IAddress
+}
+
+export interface IPlaceOrderInput {
+   items: { menuId: string; quantity: number }[];
+   deliveryAddress: IAddress;
 }

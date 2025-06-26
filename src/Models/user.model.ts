@@ -13,7 +13,6 @@ export interface IUser extends Document{
       city: string
       state: string
    }
-
 }
 // User Schema
 const userSchema = new mongoose.Schema<IUser>(
