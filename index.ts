@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 dotenv.config()
 import app from './src/app'
 import DatabaseConnect from "./config/db.config"
+import 'reflect-metadata'
 
 DatabaseConnect()
 const port = process.env.PORT || 3070

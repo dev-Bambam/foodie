@@ -32,6 +32,8 @@
       "express": "^5.1.0",
       "jsonwebtoken": "^9.0.2",
       "mongoose": "^8.15.1",
+      "reflect-metadata": "^0.2.2",
+      "tsyringe": "^4.10.0",
       "typebox": "^0.0.1",
       "typescript": "^5.8.3"
    },
