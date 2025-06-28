@@ -6,5 +6,5 @@ import { IUserRepository } from "../../api/user/types/user.types";
 
 // Register UserRepository with the User Model
 container.register<IUserRepository>('IUserRepository', {
-    useFactory: () => new UserRepository()
+    useClass: new UserRepository()
 })
