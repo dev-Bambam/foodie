@@ -9,7 +9,7 @@ import {
 import { compare } from "bcryptjs";
 import { generateToken } from "../../../Utils/token/jwt";
 
-class CustomerService implements ICustomerService {
+export class CustomerService implements ICustomerService {
    constructor(private userRepository: IUserRepository) {}
 
    async register(customer: TCustomerRegisterationInput): Promise<TCustomer> {
@@ -22,7 +22,7 @@ class CustomerService implements ICustomerService {
       const token = generateToken({ userId: newCustomer.id, role: "customer" });
 
       return {
-         id: newCustomer._id,
+         id: newCustomer.id,
          name: newCustomer.name,
          email: newCustomer.email,
          role: newCustomer.role as 'customer',
