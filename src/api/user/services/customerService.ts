@@ -9,11 +9,15 @@ import {
 import { compare } from "bcryptjs";
 import { generateToken } from "../../../Utils/token/jwt";
 import { injectable, inject } from "tsyringe";
-import { IMenuItem } from "../../menu/types/menu.type";
+import { IMenuItem, IMenuService } from "../../menu/types/menu.type";
+import { Types } from "mongoose";
 
 @injectable()
 export class CustomerService implements ICustomerService {
-   constructor(@inject('IUserRepository') private userRepository: IUserRepository) {}
+   constructor(
+      @inject("IUserRepository") private userRepository: IUserRepository,
+      @inject("IMenuRepo") private MenuService: IMenuService
+   ) {}
 
    async register(customer: TCustomerRegisterationInput): Promise<TCustomer> {
       // check if user already exist
@@ -28,7 +32,7 @@ export class CustomerService implements ICustomerService {
          id: newCustomer.id,
          name: newCustomer.name,
          email: newCustomer.email,
-         role: newCustomer.role as 'customer',
+         role: newCustomer.role as "customer",
          phone: newCustomer.phone,
          address: newCustomer.address,
          token,
@@ -52,7 +56,14 @@ export class CustomerService implements ICustomerService {
       };
    }
 
-   async browseMenus(category?: string): Promise<IMenuItem[]> {
+   async browseMenus(category?: string): Promise<IMenuItem[] | null > {
+      const menus = await this.MenuService.browseMenus(category); 
       
+      return menus 
+   }
+   async getMenuDetails(menuId: string): Promise<IMenuItem | null > {
+      const menu = await this.MenuService.getMenuDetail(menuId)
+
+      return menu 
    }
 }

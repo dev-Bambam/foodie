@@ -1,8 +1,10 @@
 import { NotFoundError } from "../../../Utils/Error/CustomError"
 import * as menutype from "../types/menu.type"
+import {inject, injectable} from 'tsyringe'
 
+@injectable()
 export class MenuService implements menutype.IMenuService{
-    constructor(private MenuRepo: menutype.IMenuRepo) { }
+    constructor(@inject('IMenuRepo') private MenuRepo: menutype.IMenuRepo) { }
     
     async browseMenus(category?: string): Promise<menutype.IMenuItem[] | null> {
         const menuCategory = category

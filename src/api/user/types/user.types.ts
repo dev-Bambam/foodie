@@ -45,13 +45,13 @@ export type TLoginInput = {
 export interface ICustomerService {
    register(customer: TCustomerRegisterationInput): Promise<TCustomer>;
    login(user: TLoginInput): Promise<{ token: string }>;
-   browseMenus(category?: string): Promise<IMenuItem[]>
-   getMenuDetails(menuId: Types.ObjectId): Promise<IMenuItem>
+   browseMenus(category?: string): Promise<IMenuItem[] | null >
+   getMenuDetails(menuId: string): Promise<IMenuItem | null >
    placeOrder(userId: Types.ObjectId, input: TPlaceOrderInput): Promise<IOrder>;
    makePayment(
       userId: Types.ObjectId,
       orderId: Types.ObjectId,
-      paymentMethod: "card" | "cash"
+      paymentMethod: "card" | "cash" | "transfer"
    ): Promise<IPayment>;
 }
 
