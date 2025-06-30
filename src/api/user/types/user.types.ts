@@ -63,9 +63,9 @@ export interface IAdminService {
    confirmPayment(paymentId: Types.ObjectId): Promise<IPayment>;
 }
 
-export interface IUserRepository extends Document {
+export interface IUserRepository {
    create(input: TCustomerRegisterationInput): Promise<IUser>;
    findByEmail(email: string): Promise<IUser | null>;
-   findById(userId: Types.ObjectId): Promise<IUser | null>;
+   // findById(userId: Types.ObjectId): Promise<IUser | null>;
 }
 

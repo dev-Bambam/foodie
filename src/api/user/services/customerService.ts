@@ -8,9 +8,11 @@ import {
 } from "../types/user.types";
 import { compare } from "bcryptjs";
 import { generateToken } from "../../../Utils/token/jwt";
+import { injectable, inject } from "tsyringe";
 
+@injectable()
 export class CustomerService implements ICustomerService {
-   constructor(private userRepository: IUserRepository) {}
+   constructor(@inject('IUserRepository') private userRepository: IUserRepository) {}
 
    async register(customer: TCustomerRegisterationInput): Promise<TCustomer> {
       // check if user already exist
