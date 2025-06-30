@@ -6,7 +6,7 @@ import { IOrder } from "../../order/types/order.type";
 
 // Main Data Model interface
 export interface IUser {
-   id: Types.ObjectId;
+   id: string;
    name: string;
    email: string;
    password: string;
@@ -45,14 +45,14 @@ export type TLoginInput = {
 export interface ICustomerService {
    register(customer: TCustomerRegisterationInput): Promise<TCustomer>;
    login(user: TLoginInput): Promise<{ token: string }>;
-   // browseMenus(category?: string): Promise<IMenuItem[]>
-   // getMenuDetails(menuId: Types.ObjectId): Promise<IMenuItem>
-   // placeOrder(userId: Types.ObjectId, input: TPlaceOrderInput): Promise<IOrder>;
-   // makePayment(
-   //    userId: Types.ObjectId,
-   //    orderId: Types.ObjectId,
-   //    paymentMethod: "card" | "cash"
-   // ): Promise<IPayment>;
+   browseMenus(category?: string): Promise<IMenuItem[]>
+   getMenuDetails(menuId: Types.ObjectId): Promise<IMenuItem>
+   placeOrder(userId: Types.ObjectId, input: TPlaceOrderInput): Promise<IOrder>;
+   makePayment(
+      userId: Types.ObjectId,
+      orderId: Types.ObjectId,
+      paymentMethod: "card" | "cash"
+   ): Promise<IPayment>;
 }
 
 // AdminService Interface
@@ -68,4 +68,3 @@ export interface IUserRepository {
    findByEmail(email: string): Promise<IUser | null>;
    // findById(userId: Types.ObjectId): Promise<IUser | null>;
 }
-

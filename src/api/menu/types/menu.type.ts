@@ -1,7 +1,6 @@
-import { Document, Types } from "mongoose";
 
-export interface IMenuItem extends Document {
-   id: Types.ObjectId;
+export interface IMenuItem {
+   id: string;
    name: string;
    description: string;
    price: number;
@@ -20,9 +19,17 @@ export type TCreateMenuInput = Required<IMenuItem>
 export type TUpdateMenuItem = Partial<IMenuItem>
 
 export interface IMenuService {
-   browseMenus(category?: string): Promise<IMenuItem[]>;
-   getMenuDetail(menuId: Types.ObjectId): Promise<IMenuItem>;
-   createMenu(menu:TCreateMenuInput): Promise<void>;
-   updateMenu(menuId: Types.ObjectId, menuObject: TUpdateMenuItem): Promise<IMenuItem>;
-   deleteMenu(menuId: Types.ObjectId): Promise<void>;
+   browseMenus(category?: string): Promise<IMenuItem[] | null >;
+   getMenuDetail(menuId: string): Promise<IMenuItem | null >;
+   createMenu(menu:TCreateMenuInput): Promise<IMenuItem>;
+   updateMenu(menuId: string, menuObject: TUpdateMenuItem): Promise<IMenuItem>;
+   deleteMenu(menuId: string): Promise<void>;
+}
+
+export interface IMenuRepo {
+   findMenuById(menuId: string): Promise<IMenuItem | null>
+   getAllMenu(category?: string): Promise<IMenuItem[] | null>
+   deleteMenuById(menuId: string): Promise<void>
+   updateMenu(menuId: string, menuObject: TUpdateMenuItem): Promise<IMenuItem | null >
+   createMenu(menu: TCreateMenuInput): Promise <IMenuItem>
 }

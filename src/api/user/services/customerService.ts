@@ -9,6 +9,7 @@ import {
 import { compare } from "bcryptjs";
 import { generateToken } from "../../../Utils/token/jwt";
 import { injectable, inject } from "tsyringe";
+import { IMenuItem } from "../../menu/types/menu.type";
 
 @injectable()
 export class CustomerService implements ICustomerService {
@@ -49,5 +50,9 @@ export class CustomerService implements ICustomerService {
       return {
          token,
       };
+   }
+
+   async browseMenus(category?: string): Promise<IMenuItem[]> {
+      
    }
 }

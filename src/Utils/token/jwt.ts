@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { Types } from 'mongoose'
 
 interface Payload{
-    userId: Types.ObjectId,
+    userId: string,
     role: 'customer' | 'admin'
 }
 
