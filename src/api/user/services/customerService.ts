@@ -10,7 +10,7 @@ import { compare } from "bcryptjs";
 import { generateToken } from "../../../Utils/token/jwt";
 import { injectable, inject } from "tsyringe";
 import { IMenuItem, IMenuService } from "../../menu/types/menu.type";
-import { Types } from "mongoose";
+
 
 @injectable()
 export class CustomerService implements ICustomerService {
@@ -61,6 +61,7 @@ export class CustomerService implements ICustomerService {
       
       return menus 
    }
+   
    async getMenuDetails(menuId: string): Promise<IMenuItem | null > {
       const menu = await this.MenuService.getMenuDetail(menuId)
 
