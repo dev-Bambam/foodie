@@ -17,10 +17,12 @@ export type TItems = {
    }>
 }
 
-export type TPlaceOrderInput = Pick<IOrder, 'userId' | 'items' | 'totalPrice' | 'deliveryAddress'> 
+export type TPlaceOrderInput = Pick<IOrder, 'userId' | 'items' | 'totalPrice' | 'deliveryAddress'> & {
+   status: 'pending'
+}
 
 export type TOrderOutput = Pick<IOrder, "userId" | "items" | "totalPrice" | "deliveryAddress"> & {
-   status: "confirmed";
+   status: ''
 };
 
 
@@ -30,5 +32,5 @@ export interface IOrderRepo{
 }
 
 export interface IOrderService{
-   placeOrder(orderInput: TPlaceOrderInput): Promise<TOrderOutput>
+   placeOrder(orderInput: TPlaceOrderInput): Promise<TPlaceOrderInput>
 }

@@ -10,3 +10,8 @@ export interface IPayment extends Document {
    transactionId?: string;
    createdAt: Date;
 }
+
+export interface IPaymentService{
+   initializePayment(amount: number, email: string, metadata?: any): Promise<any>
+   verifyPayment(reference:string): Promise<any>
+}

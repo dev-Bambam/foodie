@@ -15,4 +15,9 @@ export class OrderRepo implements ordertype.IOrderRepo{
             status: newOrder.status as 'pending'
         } 
     }
+    async fetchAll<T extends ordertype.IOrder["status"]>(status: T): Promise<ordertype.IOrder[]> {
+        const allOrder = await Order.find({ status: status })
+        
+        return allOrder
+    }
 }

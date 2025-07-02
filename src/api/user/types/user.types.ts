@@ -1,8 +1,7 @@
 import { Types, Document } from "mongoose";
 import { IPayment } from "../../payment/types/payment.type";
 import { IMenuItem } from "../../menu/types/menu.type";
-import { TPlaceOrderInput } from "../../order/types/order.type";
-import { IOrder } from "../../order/types/order.type";
+import * as ordertype from '../../order/types/order.type'
 
 // Main Data Model interface
 export interface IUser {
@@ -47,11 +46,11 @@ export interface ICustomerService {
    login(user: TLoginInput): Promise<{ token: string }>;
    browseMenus(category?: string): Promise<IMenuItem[] | null >
    getMenuDetails(menuId: string): Promise<IMenuItem | null >
-   placeOrder(userId: Types.ObjectId, input: TPlaceOrderInput): Promise<IOrder>;
+   placeOrder(input: ordertype.TPlaceOrderInput): Promise<ordertype.TPlaceOrderInput>;
    makePayment(
       userId: Types.ObjectId,
       orderId: Types.ObjectId,
-      paymentMethod: "card" | "cash" | "transfer"
+      amount: number
    ): Promise<IPayment>;
 }
 
@@ -59,12 +58,12 @@ export interface ICustomerService {
 export interface IAdminService {
    login(input: TLoginInput): Promise<{ token: string }>;
    getAllCustomers(): Promise<TCustomer[]>;
-   confirmOrder(orderId: Types.ObjectId): Promise<IOrder>;
+   // confirmOrder(orderId: Types.ObjectId): Promise<IOrder>;
    confirmPayment(paymentId: Types.ObjectId): Promise<IPayment>;
 }
 
 export interface IUserRepository {
    create(input: TCustomerRegisterationInput): Promise<IUser>;
    findByEmail(email: string): Promise<IUser | null>;
-   // findById(userId: Types.ObjectId): Promise<IUser | null>;
+   findById(userId: Types.ObjectId): Promise<IUser | null>;
 }

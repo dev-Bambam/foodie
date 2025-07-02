@@ -10,13 +10,18 @@ import { compare } from "bcryptjs";
 import { generateToken } from "../../../Utils/token/jwt";
 import { injectable, inject } from "tsyringe";
 import { IMenuItem, IMenuService } from "../../menu/types/menu.type";
+import { IOrderService, TPlaceOrderInput } from "../../order/types/order.type";
+import { Types } from "mongoose";
+import { IPayment, IPaymentService } from "../../payment/types/payment.type";
 
 
 @injectable()
 export class CustomerService implements ICustomerService {
    constructor(
       @inject("IUserRepository") private userRepository: IUserRepository,
-      @inject("IMenuRepo") private MenuService: IMenuService
+      @inject("IMenuService") private MenuService: IMenuService,
+      @inject('IOderService') private OrderService: IOrderService,
+      @inject('IPaymentService') private PaymentService: IPaymentService
    ) {}
 
    async register(customer: TCustomerRegisterationInput): Promise<TCustomer> {
@@ -66,5 +71,20 @@ export class CustomerService implements ICustomerService {
       const menu = await this.MenuService.getMenuDetail(menuId)
 
       return menu 
+   }
+
+   async placeOrder(input: TPlaceOrderInput): Promise<TPlaceOrderInput> {
+      const order = await this.OrderService.placeOrder(input)
+      return order
+   }
+
+   async makePayment(userId: Types.ObjectId, orderId: Types.ObjectId, amount: number): Promise<IPayment> {
+      const user = await this.userRepository.findById(userId)
+      
+      if (!user) {
+         throw new BadRequestError('User not found', 'PAYMENT_ERR')
+      }
+      const payment = await this.PaymentService.initializePayment(amount, user.email)
+      return payment
    }
 }
