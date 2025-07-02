@@ -17,17 +17,18 @@ export type TItems = {
    }>
 }
 
-export type TPlaceOrderInput = Pick<IOrder, 'userId' | 'items' | 'totalPrice' | 'deliveryAddress'> & { status: 'pending' }
+export type TPlaceOrderInput = Pick<IOrder, 'userId' | 'items' | 'totalPrice' | 'deliveryAddress'> 
 
-export type TOrder = Pick<IOrder, "userId" | "items" | "totalPrice" | "deliveryAddress"> & {
+export type TOrderOutput = Pick<IOrder, "userId" | "items" | "totalPrice" | "deliveryAddress"> & {
    status: "confirmed";
 };
 
 
 export interface IOrderRepo{
-   createOrder(orderInput:TPlaceOrderInput): Promise<void>
+   createOrder(orderInput: TPlaceOrderInput): Promise<TPlaceOrderInput>
+   fetchAll<T extends IOrder['status']>(status: T): Promise<IOrder[]>
 }
 
 export interface IOrderService{
-   placeOrder(orderInput: TPlaceOrderInput): Promise<void>
+   placeOrder(orderInput: TPlaceOrderInput): Promise<TOrderOutput>
 }
