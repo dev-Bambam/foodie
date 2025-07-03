@@ -4,7 +4,7 @@ import { ValidationError } from "../Utils/Error/CustomError";
 import util from 'util'
 
 const globalErrorHandler = async (err: BaseError, _req: Request, res: Response, _next: NextFunction) => {
-    const message = err.message ?? 'Server Down'
+    let message = err.message
     const status = err.status ?? 'fail'
     const statusCode = err.statusCode ?? 500
     const type = err.type ?? 'SERVER_ERR'
@@ -16,6 +16,7 @@ const globalErrorHandler = async (err: BaseError, _req: Request, res: Response, 
 
     if (!err.isOperational) {
         console.error("Server Error:", util.inspect(err, { depth: null, colors: true }));
+        message = 'Something is wrong'
     }
 
     res.status(statusCode).json({
