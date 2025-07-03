@@ -5,8 +5,8 @@ const router = Router()
 
 router.post("/register", UserController.register);
 router.post("/login", UserController.login);
-router.post("/menus", UserController.browseMenus);
-router.post("/menus/:menuId", UserController.getMenuDetails);
+router.get("/menus", UserController.browseMenus);
+router.get("/menus/:menuId", UserController.getMenuDetails);
 router.post("/orders", UserController.placeOrder);
 router.post("/payments", UserController.makePayment);
 

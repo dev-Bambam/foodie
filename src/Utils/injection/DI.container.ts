@@ -1,12 +1,15 @@
 import { container } from "tsyringe";
 import { UserRepository } from "../../api/user/repositories/user.repo";
-import { IUserRepository } from "../../api/user/types/user.types";
-import { IMenuRepo } from "../../api/menu/types/menu.type";
+import { ICustomerService, IUserRepository } from "../../api/user/types/user.types";
+import { IMenuRepo, IMenuService } from "../../api/menu/types/menu.type";
 import { MenuRepo } from "../../api/menu/repositories/menu.repo";
 import { OrderRepo } from "../../api/order/repositories/order.repo";
-import { IOrderRepo } from "../../api/order/types/order.type";
+import { IOrderRepo, IOrderService } from "../../api/order/types/order.type";
 import { IPaymentService } from "../../api/payment/types/payment.type";
 import { PaystackService } from "../../api/payment/services/paystack.service";
+import { CustomerService } from "../../api/user/services/customerService";
+import { MenuService } from "../../api/menu/services/menu.service";
+import { OrderService } from "../../api/order/services/order.service";
 
 // Register UserRepository with the User Service
 container.register<IUserRepository>('IUserRepository', {
@@ -18,13 +21,24 @@ container.register<IUserRepository>('IUserRepository', {
 container.register<IMenuRepo>('IMenuRepo', {
     useClass: MenuRepo
 })
+container.register<IMenuService>('IMenuService', {
+    useClass:MenuService
+})
 
 // Register Order Repository
 container.register<IOrderRepo>('IOrderRepo', {
     useClass: OrderRepo
 })
+container.register<IOrderService>('IOderService', {
+    useClass: OrderService
+})
 
 // Register Payment service
-container.register<IPaymentService>('IPayment', {
+container.register<IPaymentService>('IPaymentService', {
     useClass: PaystackService
+})
+
+// Register Customer Service
+container.register<ICustomerService>('ICustomerService', {
+    useClass: CustomerService
 })

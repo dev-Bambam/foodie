@@ -2,6 +2,7 @@ import { Types, Document } from "mongoose";
 import { IPayment } from "../../payment/types/payment.type";
 import { IMenuItem } from "../../menu/types/menu.type";
 import * as ordertype from '../../order/types/order.type'
+import * as menutype from '../../menu/types/menu.type'
 
 // Main Data Model interface
 export interface IUser {
@@ -60,6 +61,7 @@ export interface IAdminService {
    getAllCustomers(): Promise<TCustomer[]>;
    // confirmOrder(orderId: Types.ObjectId): Promise<IOrder>;
    confirmPayment(paymentId: Types.ObjectId): Promise<IPayment>;
+   createMenu(menuInput:menutype.TCreateMenuInput): Promise<menutype.IMenuItem>
 }
 
 export interface IUserRepository {
