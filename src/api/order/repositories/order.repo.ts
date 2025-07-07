@@ -23,4 +23,15 @@ export class OrderRepo implements ordertype.IOrderRepo {
       }
       return await Order.find();
    }
+   async updateOrder(
+      orderId: string,
+      orderObject: ordertype.TOrderUpdate
+   ): Promise<ordertype.TOrder> {
+      const updatedOrder = await Order.findByIdAndUpdate(orderId, orderObject, { new: true });
+
+      return updatedOrder as ordertype.TOrder;
+   }
+   async deleteOrder(orderId: string): Promise<void> {
+      await Order.findByIdAndDelete(orderId);
+   }
 }

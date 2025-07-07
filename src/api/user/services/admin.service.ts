@@ -23,30 +23,30 @@ export class AdminService implements usertype.IAdminService {
    async fetchAllOrder<T extends ordertype.TOrder["status"]>(
       status?: T
    ): Promise<ordertype.TOrder[]> {
-      return this.OrderService.fetchAllOrder(status);
+      return await this.OrderService.fetchAllOrder(status);
    }
 
    async updateOrder(
       orderId: string,
       orderData: ordertype.TOrderUpdate
    ): Promise<ordertype.TOrder> {
-      return this.OrderService.updateOrder(orderId, orderData);
+      return await this.OrderService.updateOrder(orderId, orderData);
    }
 
    // CRUD on Menu
    async createMenu(menuInput: menutype.TCreateMenuInput): Promise<menutype.TMenuItem> {
-      return this.MenuService.createMenu(menuInput);
+      return await this.MenuService.createMenu(menuInput);
    }
 
    async updateMenu(
       menuId: string,
       menuInput: menutype.TUpdateMenuItem
    ): Promise<menutype.TMenuItem> {
-      return this.MenuService.updateMenu(menuId, menuInput);
+      return await this.MenuService.updateMenu(menuId, menuInput);
    }
 
    async deleteMenu(menuId: string): Promise<void> {
-      return this.MenuService.deleteMenu(menuId);
+      return await this.MenuService.deleteMenu(menuId);
    }
 
    // CRUD on Payment
@@ -57,6 +57,6 @@ export class AdminService implements usertype.IAdminService {
 
    // CRUD on Customer/ User
    async getAllCustomers(): Promise<usertype.TCustomer[]> {
-      return this.UserRepo.fetchAllCustomer();
+      return await this.UserRepo.fetchAllCustomer();
    }
 }

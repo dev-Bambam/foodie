@@ -28,9 +28,13 @@ export type TOrderUpdate = Partial<TOrder>
 export interface IOrderRepo{
    createOrder(orderInput: TPlaceOrderInput): Promise<TOrderOutput>
    fetchAllOrder<T extends TOrder['status']>(status: T): Promise<TOrder[]>
+   updateOrder(orderId: string, orderObjet: TOrderUpdate): Promise<TOrder>
+   deleteOrder(orderId:string): Promise<void>
 }
 
-export interface IOrderService{
-   placeOrder(orderInput: TPlaceOrderInput): Promise<TPlaceOrderInput>
-   fetchAllOrder<T extends TOrder['status']>(status?: T): Promise<TOrder[]>
+export interface IOrderService {
+   placeOrder(orderInput: TPlaceOrderInput): Promise<TPlaceOrderInput>;
+   fetchAllOrder<T extends TOrder["status"]>(status?: T): Promise<TOrder[]>;
+   updateOrder(orderId: string, orderObjet: TOrderUpdate): Promise<TOrder>;
+   deleteOrder(orderId: string): Promise<void>
 }
