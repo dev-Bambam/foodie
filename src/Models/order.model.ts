@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import { IOrder } from "../api/order/types/order.type";
+import { TOrder } from "../api/order/types/order.type";
 
-const orderSchema = new Schema<IOrder>(
+const orderSchema = new Schema<TOrder>(
    {
-      userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+      userId: { type: String, ref: "User", required: true },
       items: [
          {
             menuId: { type: Schema.Types.ObjectId, ref: "Menu", required: true },

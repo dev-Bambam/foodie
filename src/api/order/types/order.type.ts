@@ -1,13 +1,13 @@
-import { Document, Types } from "mongoose";
+
 import { TAddress } from "../../user/types/user.types";
 
-export interface IOrder {
-   userId: Types.ObjectId;
-   items: TItems
+export type TOrder = {
+   userId: string;
+   items: TItems;
    totalPrice: number;
    status: "pending" | "confirmed" | "delivered" | "cancelled";
-   deliveryAddress:TAddress
-}
+   deliveryAddress: TAddress;
+};
 
 export type TItems = {
    items: Array<{
@@ -17,20 +17,19 @@ export type TItems = {
    }>
 }
 
-export type TPlaceOrderInput = Pick<IOrder, 'userId' | 'items' | 'totalPrice' | 'deliveryAddress'> & {
-   status: 'pending'
-}
+export type TPlaceOrderInput = Pick<TOrder, 'userId' | 'items' | 'totalPrice' | 'deliveryAddress'>
 
-export type TOrderOutput = Pick<IOrder, "userId" | "items" | "totalPrice" | "deliveryAddress"> & {
-   status: ''
+export type TOrderOutput = Pick<TOrder, "userId" | "items" | "totalPrice" | "deliveryAddress"> & {
+   status: 'pending'
 };
 
 
 export interface IOrderRepo{
-   createOrder(orderInput: TPlaceOrderInput): Promise<TPlaceOrderInput>
-   fetchAll<T extends IOrder['status']>(status: T): Promise<IOrder[]>
+   createOrder(orderInput: TPlaceOrderInput): Promise<TOrderOutput>
+   fetchAllOrder<T extends TOrder['status']>(status: T): Promise<TOrder[]>
 }
 
 export interface IOrderService{
    placeOrder(orderInput: TPlaceOrderInput): Promise<TPlaceOrderInput>
+   fetchAllOrder<T extends TOrder['status']>(status?: T): Promise<TOrder[]>
 }

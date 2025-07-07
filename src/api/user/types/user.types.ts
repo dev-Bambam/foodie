@@ -59,13 +59,15 @@ export interface ICustomerService {
 export interface IAdminService {
    login(input: TLoginInput): Promise<{ token: string }>;
    getAllCustomers(): Promise<TCustomer[]>;
-   // confirmOrder(orderId: Types.ObjectId): Promise<IOrder>;
-   confirmPayment(paymentId: Types.ObjectId): Promise<IPayment>;
-   createMenu(menuInput:menutype.TCreateMenuInput): Promise<menutype.IMenuItem>
+   confirmOrder(orderId: string): Promise<ordertype.TOrderOutput>;
+   confirmPayment(paymentId: string): Promise<IPayment>;
+   createMenu(menuInput: menutype.TCreateMenuInput): Promise<menutype.TMenuItem>
+   updateMenu(menuId:string, menuInput:menutype.TUpdateMenuItem): Promise<menutype.TMenuItem>
 }
 
 export interface IUserRepository {
    create(input: TCustomerRegisterationInput): Promise<IUser>;
    findByEmail(email: string): Promise<IUser | null>;
    findById(userId: Types.ObjectId): Promise<IUser | null>;
+   fetchAllCustomer(): Promise<TCustomer[]>
 }
