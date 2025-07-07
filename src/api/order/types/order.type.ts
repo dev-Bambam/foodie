@@ -22,6 +22,7 @@ export type TPlaceOrderInput = Pick<TOrder, 'userId' | 'items' | 'totalPrice' | 
 export type TOrderOutput = Pick<TOrder, "userId" | "items" | "totalPrice" | "deliveryAddress"> & {
    status: 'pending'
 };
+export type TOrderUpdate = Partial<TOrder>
 
 
 export interface IOrderRepo{

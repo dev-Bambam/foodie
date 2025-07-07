@@ -16,7 +16,10 @@ export class AdminService implements usertype.IAdminService{
 
         return newMenu
     };
-
+    async updateMenu(menuId: string, menuInput: menutype.TUpdateMenuItem): Promise<menutype.TMenuItem> {
+        return await this.MenuService.updateMenu(menuId, menuInput)
+    }
+    
     async getAllCustomers(): Promise<usertype.TCustomer[]> {
         const customers = await this.UserRepo.fetchAllCustomer()
 
