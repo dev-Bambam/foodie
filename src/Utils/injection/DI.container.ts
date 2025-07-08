@@ -1,6 +1,6 @@
 import { container } from "tsyringe";
 import { UserRepository } from "../../api/user/repositories/user.repo";
-import { ICustomerService, IUserRepository } from "../../api/user/types/user.types";
+import { IAdminService, ICustomerService, IUserRepository } from "../../api/user/types/user.types";
 import { IMenuRepo, IMenuService } from "../../api/menu/types/menu.type";
 import { MenuRepo } from "../../api/menu/repositories/menu.repo";
 import { OrderRepo } from "../../api/order/repositories/order.repo";
@@ -10,6 +10,7 @@ import { PaystackService } from "../../api/payment/services/paystack.service";
 import { CustomerService } from "../../api/user/services/customerService";
 import { MenuService } from "../../api/menu/services/menu.service";
 import { OrderService } from "../../api/order/services/order.service";
+import { AdminService } from "../../api/user/services/admin.service";
 
 // Register UserRepository with the User Service
 container.register<IUserRepository>('IUserRepository', {
@@ -41,4 +42,9 @@ container.register<IPaymentService>('IPaymentService', {
 // Register Customer Service
 container.register<ICustomerService>('ICustomerService', {
     useClass: CustomerService
+})
+
+//  REgister Admin Service
+container.register<IAdminService>('IAdminService', {
+    useClass: AdminService
 })

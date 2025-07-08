@@ -9,7 +9,7 @@ export class AdminService implements usertype.IAdminService {
    constructor(
       @inject("IMenuService") private MenuService: menutype.IMenuService,
       @inject("IOderService") private OrderService: ordertype.IOrderService,
-      @inject("IUserRepo") private UserRepo: usertype.IUserRepository
+      @inject("IUserRepository") private UserRepo: usertype.IUserRepository
    ) {}
 
    // Authentication

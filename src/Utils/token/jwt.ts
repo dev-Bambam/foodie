@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken'
-import { Types } from 'mongoose'
 
-interface Payload{
-    userId: string,
-    role: 'customer' | 'admin'
-}
+type TPayload =  {
+   userId: string;
+   role: "customer" | "admin";
+};
 
-export const generateToken = (payload: Payload): string => {
+export const generateToken = (payload: TPayload): string => {
     const secret = process.env.JWT_SECRET!
     const token = jwt.sign(payload, secret, { expiresIn: '1d' })
     

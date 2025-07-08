@@ -13,5 +13,5 @@ export const createMenu = async (req: Request, res: Response) => {
         data: {
             menu
         }
-    })
+    });
 }
