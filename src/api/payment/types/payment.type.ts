@@ -1,17 +1,31 @@
-import mongoose, { Document, Types } from "mongoose";
-
-export interface IPayment extends Document {
-   id: Types.ObjectId
-   orderId: mongoose.Types.ObjectId;
-   userId: mongoose.Types.ObjectId;
+export type TPayment =  {
+   id: string;
+   orderId: string;
+   userEmail: string;
    amount: number;
-   status: "pending" | "completed" | "failed";
-   paymentMethod: "card" | "cash";
-   transactionId?: string;
+   status: "pending" | "successful" | "failed";
+   paymentMethod: "bank transfer" | "cash";
+   transactionId: string;
    createdAt: Date;
+};
+
+export type TPaymentInput = Omit<TPayment, 'id' | 'status' | 'createdAt'>;
+export type TUpdatePayment = Partial<TPaymentInput>;
+
+export interface IPaymentService {
+   initializePayment(amount: number, email: string, metadata?: any): Promise<TPayment>;
+   verifyPayment(reference: string): Promise<TPayment>;
+   fetchAllPayment<T extends keyof TPayment["status"]>(status?: T): Promise<TPayment[]>;
+   fetchAPayment(paymentId: string): Promise<TPayment>;
+   updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
+   deletePayment(paymentId: string): Promise<void>;
 }
 
-export interface IPaymentService{
-   initializePayment(amount: number, email: string, metadata?: any): Promise<any>
-   verifyPayment(reference:string): Promise<any>
+export interface IPaymentRepo{
+   // CRUD
+   createPayment(payment: TPaymentInput): Promise<TPayment>
+   fetchAllPayment<T extends keyof TPayment['status']>(status?: T): Promise<TPayment[]>
+   fetchAPayment(paymentId: string): Promise<TPayment>
+   updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>
+   deletePayment(paymentId: string): Promise<void>
 }

@@ -1,7 +1,9 @@
 import axios from "axios";
-import { IPaymentService } from "../types/payment.type";
+import * as paymenttype from "../types/payment.type";
+import { injectable, inject } from "tsyringe";
 
-export class PaystackService implements IPaymentService{
+@injectable()
+export class PaystackService implements paymenttype.IPaymentService{
     private secretKey = process.env.PAYSTACK_SECRET_KEY!
     private baseUrl = 'https://api.paystack.co'
 

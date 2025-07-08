@@ -1,22 +1,23 @@
 import * as usertype from "../types/user.types";
 import * as menutype from "../../menu/types/menu.type";
 import * as ordertype from "../../order/types/order.type";
-import { IPayment } from "../../payment/types/payment.type";
+import { TPayment } from "../../payment/types/payment.type";
 import { injectable, inject } from "tsyringe";
+import { AuthService } from "../../auth/services/auth.service";
 
 @injectable()
 export class AdminService implements usertype.IAdminService {
    constructor(
       @inject("IMenuService") private MenuService: menutype.IMenuService,
       @inject("IOderService") private OrderService: ordertype.IOrderService,
-      @inject("IUserRepository") private UserRepo: usertype.IUserRepository
+      @inject("IUserRepository") private UserRepo: usertype.IUserRepository,
+      @inject("IAuthService") private AUthService: AuthService
    ) {}
 
    // Authentication
    async login(input: usertype.TLoginInput): Promise<{ token: string }> {
-      // Implement your admin login logic here
-      // Example: delegate to UserRepo or a dedicated AuthService
-      throw new Error("Not implemented");
+      const token = await this.AUthService.login(input);
+      return token;
    }
 
    // CRUD Order

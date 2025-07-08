@@ -11,6 +11,8 @@ import { CustomerService } from "../../api/user/services/customerService";
 import { MenuService } from "../../api/menu/services/menu.service";
 import { OrderService } from "../../api/order/services/order.service";
 import { AdminService } from "../../api/user/services/admin.service";
+import { IAuthService } from "../../api/auth/types/auth.types";
+import { AuthService } from "../../api/auth/services/auth.service";
 
 // Register UserRepository with the User Service
 container.register<IUserRepository>('IUserRepository', {
@@ -44,7 +46,12 @@ container.register<ICustomerService>('ICustomerService', {
     useClass: CustomerService
 })
 
-//  REgister Admin Service
+//  Register Admin Service
 container.register<IAdminService>('IAdminService', {
     useClass: AdminService
+})
+
+// Register Auth Service
+container.register<IAuthService>('IAuthService', {
+    useClass: AuthService
 })

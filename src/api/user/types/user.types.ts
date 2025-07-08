@@ -1,46 +1,36 @@
-import { Types, Document } from "mongoose";
-import { IPayment } from "../../payment/types/payment.type";
+import { TPayment } from "../../payment/types/payment.type";
 import { IMenuItem } from "../../menu/types/menu.type";
 import * as ordertype from "../../order/types/order.type";
 import * as menutype from "../../menu/types/menu.type";
 
-// Main Data Model interface
-export interface IUser {
+// Main Data Model Type
+export type TUser = {
    id: string;
    name: string;
    email: string;
    password: string;
    role: "customer" | "admin";
    phone?: string;
-   address?: TAddress;
+   address?: TUserAddress;
    createdAt: Date;
    updatedAt: Date;
-}
+};
 
 // Shared Types
-export type TAddress = {
+export type TUserAddress = {
    street: string;
    city: string;
    state: string;
 };
 
-export type TCustomer = Pick<IUser, "id" | "name" | "email" | "phone" | "address"> & {
+export type TUserOutput = Omit<TUser, "password"> & { token: string };
+export type TCustomer = Pick<TUser, "id" | "name" | "email" | "phone" | "address"> & {
    role: "customer";
    token: string;
 };
-export type TCustomerRegisterationInput = {
-   name: string;
-   email: string;
-   password: string;
-   role?: string;
-   phone?: string;
-   address?: TAddress;
-};
+export type TCustomerRegisterationInput = Pick <TUser, 'name'|'email'|'address'|'phone'|'password'>
 
-export type TLoginInput = {
-   email: string;
-   password: string;
-};
+export type TLoginInput = Pick<TUser, 'email' | 'password'>
 
 // CustomerService Interface
 export interface ICustomerService {
@@ -49,7 +39,7 @@ export interface ICustomerService {
    browseMenus(category?: string): Promise<IMenuItem[] | null>;
    getMenuDetails(menuId: string): Promise<IMenuItem | null>;
    placeOrder(input: ordertype.TPlaceOrderInput): Promise<ordertype.TPlaceOrderInput>;
-   makePayment(userId: Types.ObjectId, orderId: Types.ObjectId, amount: number): Promise<IPayment>;
+   makePayment(userId: string, orderId: string, amount: number): Promise<TPayment>;
 }
 
 // AdminService Interface
@@ -67,15 +57,15 @@ export interface IAdminService {
    deleteMenu(menuId: string): Promise<void>;
 
    // CRUD on Payment
-   updatePayment(paymentId: string): Promise<IPayment>;
+   updatePayment(paymentId: string): Promise<TPayment>;
 
    // CRUD on Customer/ User
    getAllCustomers(): Promise<TCustomer[]>;
 }
 
 export interface IUserRepository {
-   create(input: TCustomerRegisterationInput): Promise<IUser>;
-   findByEmail(email: string): Promise<IUser | null>;
-   findById(userId: Types.ObjectId): Promise<IUser | null>;
+   create(input: TCustomerRegisterationInput): Promise<TUser>;
+   findByEmail(email: string): Promise<TUser | null>;
+   findById(userId: string): Promise<TUser | null>;
    fetchAllCustomer(): Promise<TCustomer[]>;
 }

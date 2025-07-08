@@ -1,9 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import { IPayment } from "../api/payment/types/payment.type";
+import { TPayment } from "../api/payment/types/payment.type";
 
-const paymentSchema = new Schema<IPayment>({
-   orderId: { type: Schema.Types.ObjectId, ref: "Order", required: true },
-   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+const paymentSchema = new Schema<TPayment>({
+   orderId: { type: String, ref: "Order", required: true },
+   userId: { type: String, ref: "User", required: true },
    amount: { type: Number, required: true, min: 0 },
    status: {
       type: String,
