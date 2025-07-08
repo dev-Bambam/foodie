@@ -23,18 +23,16 @@ export type TUserAddress = {
    state: string;
 };
 
-export type TUserOutput = Omit<TUser, "password"> & { token: string };
-export type TCustomer = Pick<TUser, "id" | "name" | "email" | "phone" | "address"> & {
-   role: "customer";
-   token: string;
-};
-export type TCustomerRegisterationInput = Pick <TUser, 'name'|'email'|'address'|'phone'|'password'>
-
-export type TLoginInput = Pick<TUser, 'email' | 'password'>
+export type TUserOutput = Omit<TUser, "password" | 'updatedAt'> & { token: string };
+export type TCustomerRegisterationInput = Pick<
+   TUser,
+   "name" | "email" | "address" | "phone" | "password"
+>;
+export type TLoginInput = Pick<TUser, "email" | "password">;
 
 // CustomerService Interface
 export interface ICustomerService {
-   register(customer: TCustomerRegisterationInput): Promise<TCustomer>;
+   register(customer: TCustomerRegisterationInput): Promise<TUserOutput>;
    login(user: TLoginInput): Promise<{ token: string }>;
    browseMenus(category?: string): Promise<IMenuItem[] | null>;
    getMenuDetails(menuId: string): Promise<IMenuItem | null>;
@@ -45,7 +43,7 @@ export interface ICustomerService {
 // AdminService Interface
 export interface IAdminService {
    // Authentication
-   login(input: TLoginInput): Promise<{ token: string }>;
+   login(input: TLoginInput): Promise<TUserOutput>;
 
    // CRUD Order
    fetchAllOrder<T extends ordertype.TOrder["status"]>(status?: T): Promise<ordertype.TOrder[]>;
@@ -60,12 +58,12 @@ export interface IAdminService {
    updatePayment(paymentId: string): Promise<TPayment>;
 
    // CRUD on Customer/ User
-   getAllCustomers(): Promise<TCustomer[]>;
+   getAllCustomers(): Promise<TUserOutput[]>;
 }
 
 export interface IUserRepository {
    create(input: TCustomerRegisterationInput): Promise<TUser>;
    findByEmail(email: string): Promise<TUser | null>;
    findById(userId: string): Promise<TUser | null>;
-   fetchAllCustomer(): Promise<TCustomer[]>;
+   fetchAllCustomer(): Promise<TUser[]>;
 }

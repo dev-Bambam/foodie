@@ -1,6 +1,6 @@
 import { BadRequestError, NotFoundError } from "../../../Utils/Error/CustomError";
 import {
-   TCustomer,
+   TUserOutput,
    ICustomerService,
    TLoginInput,
    TCustomerRegisterationInput,
@@ -11,8 +11,7 @@ import { generateToken } from "../../../Utils/token/jwt";
 import { injectable, inject } from "tsyringe";
 import { IMenuItem, IMenuService } from "../../menu/types/menu.type";
 import { IOrderService, TPlaceOrderInput } from "../../order/types/order.type";
-import { Types } from "mongoose";
-import { IPayment, IPaymentService } from "../../payment/types/payment.type";
+import * as paymenttype from "../../payment/types/payment.type";
 
 
 @injectable()
@@ -21,10 +20,10 @@ export class CustomerService implements ICustomerService {
       @inject("IUserRepository") private userRepository: IUserRepository,
       @inject("IMenuService") private MenuService: IMenuService,
       @inject('IOderService') private OrderService: IOrderService,
-      @inject('IPaymentService') private PaymentService: IPaymentService
+      @inject('IPaymentService') private PaymentService: paymenttype.IPaymentService
    ) {}
 
-   async register(customer: TCustomerRegisterationInput): Promise<TCustomer> {
+   async register(customer: TCustomerRegisterationInput): Promise<TUserOutput> {
       // check if user already exist
       const userExist = await this.userRepository.findByEmail(customer.email);
       if (userExist) {
@@ -40,11 +39,12 @@ export class CustomerService implements ICustomerService {
          role: newCustomer.role as "customer",
          phone: newCustomer.phone,
          address: newCustomer.address,
+         createdAt: newCustomer.createdAt,
          token,
       };
    }
 
-   async login(input: TLoginInput): Promise<{ token: string }> {
+   async login(input: TLoginInput): Promise<TUserOutput> {
       const user = await this.userRepository.findByEmail(input.email);
       if (!user) {
          throw new NotFoundError();
@@ -57,6 +57,13 @@ export class CustomerService implements ICustomerService {
 
       const token = generateToken({ userId: user.id, role: "customer" });
       return {
+         id: user.id,
+         name: user.name,
+         email: user.email,
+         role: user.role as "customer",
+         phone: user.phone,
+         address: user.address,
+         createdAt: user.createdAt,
          token,
       };
    }
@@ -78,7 +85,7 @@ export class CustomerService implements ICustomerService {
       return order
    }
 
-   async makePayment(userId: Types.ObjectId, orderId: Types.ObjectId, amount: number): Promise<IPayment> {
+   async makePayment(userId: string, orderId: string, amount: number): Promise<paymenttype.TPayment> {
       const user = await this.userRepository.findById(userId)
       
       if (!user) {

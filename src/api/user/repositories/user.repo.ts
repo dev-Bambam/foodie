@@ -1,22 +1,20 @@
-import { IUserRepository, TCustomer } from "../types/user.types";
 import User from "../../../Models/user.model";
-import { IUser } from "../types/user.types";
+import * as usertype from "../types/user.types";
 import { injectable } from "tsyringe";
-import { TCustomerRegisterationInput } from "../types/user.types";
-import { Types } from "mongoose";
+
 
 @injectable()
-export class UserRepository implements IUserRepository {
-   async findByEmail(email: string): Promise<IUser | null> {
-      return await User.findOne({ email }); // Mongoose example
+export class UserRepository implements usertype.IUserRepository {
+   async findByEmail(email: string): Promise<usertype.TUser | null> {
+      return await User.findOne({ email }); 
    }
-   async create(input: TCustomerRegisterationInput): Promise<IUser> {
-      return await User.create(input); // Mongoose example
+   async create(input: usertype.TCustomerRegisterationInput): Promise<usertype.TUser> {
+      return await User.create(input); 
    }
-   async findById(userId: Types.ObjectId): Promise<IUser | null> {
+   async findById(userId: string): Promise<usertype.TUser | null> {
       return await User.findById(userId)
    }
-   async fetchAllCustomer(): Promise<TCustomer[]> {
+   async fetchAllCustomer(): Promise<usertype.TUser[]> {
       return await User.find()
    }
 }
