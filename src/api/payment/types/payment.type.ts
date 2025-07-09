@@ -24,8 +24,8 @@ export interface IPaymentService {
 export interface IPaymentRepo{
    // CRUD
    createPayment(payment: TPaymentInput): Promise<TPayment>
-   fetchAllPayment<T extends keyof TPayment['status']>(status?: T): Promise<TPayment[]>
-   fetchAPayment(paymentId: string): Promise<TPayment>
+   fetchAllPayment<T extends keyof TPayment['status']>(status?: T): Promise<TPayment[] | null>
+   fetchAPayment(paymentId: string): Promise<TPayment | null >
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>
    deletePayment(paymentId: string): Promise<void>
 }
