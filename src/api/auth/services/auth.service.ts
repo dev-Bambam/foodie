@@ -24,7 +24,14 @@ export class AuthService implements authtype.IAuthService {
        const token = generateToken({ userId: user.id, role: user.role })
        
        return {
-           token
-       }
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role as "customer",
+          phone: user.phone,
+          address: user.address,
+          createdAt: user.createdAt,
+          token,
+       };
    }
 }

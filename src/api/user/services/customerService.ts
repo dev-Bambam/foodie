@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from "../../../Utils/Error/CustomError";
+import { BadRequestError } from "../../../Utils/Error/CustomError";
 import {
    TUserOutput,
    ICustomerService,
@@ -6,12 +6,12 @@ import {
    TCustomerRegisterationInput,
    IUserRepository,
 } from "../types/user.types";
-import { compare } from "bcryptjs";
 import { generateToken } from "../../../Utils/token/jwt";
 import { injectable, inject } from "tsyringe";
 import { IMenuItem, IMenuService } from "../../menu/types/menu.type";
 import { IOrderService, TPlaceOrderInput } from "../../order/types/order.type";
 import * as paymenttype from "../../payment/types/payment.type";
+import { AuthService } from "../../auth/services/auth.service";
 
 
 @injectable()
@@ -20,7 +20,8 @@ export class CustomerService implements ICustomerService {
       @inject("IUserRepository") private userRepository: IUserRepository,
       @inject("IMenuService") private MenuService: IMenuService,
       @inject('IOderService') private OrderService: IOrderService,
-      @inject('IPaymentService') private PaymentService: paymenttype.IPaymentService
+      @inject('IPaymentService') private PaymentService: paymenttype.IPaymentService,
+      @inject('IAuthService') private AuthService: AuthService
    ) {}
 
    async register(customer: TCustomerRegisterationInput): Promise<TUserOutput> {
@@ -45,44 +46,19 @@ export class CustomerService implements ICustomerService {
    }
 
    async login(input: TLoginInput): Promise<TUserOutput> {
-      const user = await this.userRepository.findByEmail(input.email);
-      if (!user) {
-         throw new NotFoundError();
-      }
-
-      const validPassword = await compare(input.password, user.password);
-      if (!validPassword) {
-         throw new BadRequestError("Invalid password", "PASSWORD_ERR");
-      }
-
-      const token = generateToken({ userId: user.id, role: "customer" });
-      return {
-         id: user.id,
-         name: user.name,
-         email: user.email,
-         role: user.role as "customer",
-         phone: user.phone,
-         address: user.address,
-         createdAt: user.createdAt,
-         token,
-      };
+      return await this.AuthService.login(input)
    }
 
    async browseMenus(category?: string): Promise<IMenuItem[] | null > {
-      const menus = await this.MenuService.browseMenus(category); 
-      
-      return menus 
+      return await this.MenuService.browseMenus(category); 
    }
    
    async getMenuDetails(menuId: string): Promise<IMenuItem | null > {
-      const menu = await this.MenuService.getMenuDetail(menuId)
-
-      return menu 
+      return await this.MenuService.getMenuDetail(menuId) 
    }
 
    async placeOrder(input: TPlaceOrderInput): Promise<TPlaceOrderInput> {
-      const order = await this.OrderService.placeOrder(input)
-      return order
+      return await this.OrderService.placeOrder(input)
    }
 
    async makePayment(userId: string, orderId: string, amount: number): Promise<paymenttype.TPayment> {

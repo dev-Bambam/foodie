@@ -3,7 +3,7 @@ import { TPayment } from "../api/payment/types/payment.type";
 
 const paymentSchema = new Schema<TPayment>({
    orderId: { type: String, ref: "Order", required: true },
-   userId: { type: String, ref: "User", required: true },
+   userEmail: { type: String, ref: "User", required: true },
    amount: { type: Number, required: true, min: 0 },
    status: {
       type: String,

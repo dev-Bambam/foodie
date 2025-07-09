@@ -51,13 +51,13 @@ export class AdminService implements usertype.IAdminService {
    }
 
    // CRUD on Payment
-   async updatePayment(paymentId: string): Promise<IPayment> {
+   async updatePayment(paymentId: string): Promise<TPayment> {
       // Implement your payment update logic here
       throw new Error("Not implemented");
    }
 
    // CRUD on Customer/ User
-   async getAllCustomers(): Promise<usertype.TCustomer[]> {
+   async getAllCustomers(): Promise<usertype.TUser[]> {
       return await this.UserRepo.fetchAllCustomer();
    }
 }
