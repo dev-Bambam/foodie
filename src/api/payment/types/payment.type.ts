@@ -1,4 +1,4 @@
-export type TPayment =  {
+export type TPayment = {
    id: string;
    orderId: string;
    userEmail: string;
@@ -9,23 +9,25 @@ export type TPayment =  {
    createdAt: Date;
 };
 
-export type TPaymentInput = Omit<TPayment, 'id' | 'status' | 'createdAt'>;
+export type TPaymentInput = Omit<TPayment, "id" | "status" | "createdAt">;
 export type TUpdatePayment = Partial<TPaymentInput>;
 
 export interface IPaymentService {
-   initializePayment(amount: number, email: string, metadata?: any): Promise<TPayment>;
-   verifyPayment(reference: string): Promise<TPayment>;
+   createPayment(payment: TPaymentInput): Promise<TPayment>;
    fetchAllPayment<T extends keyof TPayment["status"]>(status?: T): Promise<TPayment[]>;
    fetchAPayment(paymentId: string): Promise<TPayment>;
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
    deletePayment(paymentId: string): Promise<void>;
 }
-
-export interface IPaymentRepo{
+export interface IPaymentGateway {
+   initializePayment(amount: number, email: string, metadata?: any): Promise<any>;
+   verifyPayment(paymentId: string): Promise<any>;
+}
+export interface IPaymentRepo {
    // CRUD
-   createPayment(payment: TPaymentInput): Promise<TPayment>
-   fetchAllPayment<T extends keyof TPayment['status']>(status?: T): Promise<TPayment[] | null>
-   fetchAPayment(paymentId: string): Promise<TPayment | null >
-   updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>
-   deletePayment(paymentId: string): Promise<void>
+   createPayment(payment: TPaymentInput): Promise<TPayment>;
+   fetchAllPayment<T extends keyof TPayment["status"]>(status?: T): Promise<TPayment[]>;
+   fetchAPayment(paymentId: string): Promise<TPayment | null>;
+   updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
+   deletePayment(paymentId: string): Promise<void>;
 }

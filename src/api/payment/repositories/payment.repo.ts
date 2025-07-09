@@ -23,7 +23,7 @@ export class PaymentRepo implements paymenttype.IPaymentRepo {
       return payment
    }
 
-   async fetchAllPayment<T extends keyof paymenttype.TPayment["status"]>(status?: T): Promise<paymenttype.TPayment[] | null> {
+   async fetchAllPayment<T extends keyof paymenttype.TPayment["status"]>(status?: T): Promise<paymenttype.TPayment[]> {
       let allPayment;
       if (status) {
          allPayment = await Payment.find({ status })
