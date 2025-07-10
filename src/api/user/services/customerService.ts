@@ -6,7 +6,6 @@ import {
    TCustomerRegisterationInput,
    IUserRepository,
 } from "../types/user.types";
-import { generateToken } from "../../../Utils/token/jwt";
 import { injectable, inject } from "tsyringe";
 import { IMenuItem, IMenuService } from "../../menu/types/menu.type";
 import { IOrderService, TPlaceOrderInput } from "../../order/types/order.type";
@@ -25,24 +24,8 @@ export class CustomerService implements ICustomerService {
    ) {}
 
    async register(customer: TCustomerRegisterationInput): Promise<TUserOutput> {
-      // check if user already exist
-      const userExist = await this.userRepository.findByEmail(customer.email);
-      if (userExist) {
-         throw new BadRequestError("User already registered", "DUPLICATE_USER_ERR");
-      }
-      const newCustomer = await this.userRepository.create(customer);
-      const token = generateToken({ userId: newCustomer.id, role: "customer" });
-
-      return {
-         id: newCustomer.id,
-         name: newCustomer.name,
-         email: newCustomer.email,
-         role: newCustomer.role as "customer",
-         phone: newCustomer.phone,
-         address: newCustomer.address,
-         createdAt: newCustomer.createdAt,
-         token,
-      };
+      const user = await this.AuthService.login(customer)
+      return user
    }
 
    async login(input: TLoginInput): Promise<TUserOutput> {

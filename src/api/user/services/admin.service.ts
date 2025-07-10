@@ -15,9 +15,9 @@ export class AdminService implements usertype.IAdminService {
    ) {}
 
    // Authentication
-   async login(input: usertype.TLoginInput): Promise<{ token: string }> {
-      const token = await this.AUthService.login(input);
-      return token;
+   async login(input: usertype.TLoginInput): Promise<usertype.TUserOutput> {
+      const user = await this.AUthService.login(input)
+      return user
    }
 
    // CRUD Order
@@ -57,7 +57,8 @@ export class AdminService implements usertype.IAdminService {
    }
 
    // CRUD on Customer/ User
-   async getAllCustomers(): Promise<usertype.TUser[]> {
-      return await this.UserRepo.fetchAllCustomer();
-   }
+  async getAllCustomers(): Promise<usertype.TUserOutput[]> {
+     const allCustomer = await this.UserRepo.fetchAllCustomer()
+     return allCustomer 
+  }
 }

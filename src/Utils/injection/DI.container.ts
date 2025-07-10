@@ -5,7 +5,7 @@ import { IMenuRepo, IMenuService } from "../../api/menu/types/menu.type";
 import { MenuRepo } from "../../api/menu/repositories/menu.repo";
 import { OrderRepo } from "../../api/order/repositories/order.repo";
 import { IOrderRepo, IOrderService } from "../../api/order/types/order.type";
-import { IPaymentService } from "../../api/payment/types/payment.type";
+import { IPaymentGateway, IPaymentService } from "../../api/payment/types/payment.type";
 import { PaystackService } from "../../api/payment/services/paystack.service";
 import { CustomerService } from "../../api/user/services/customerService";
 import { MenuService } from "../../api/menu/services/menu.service";
@@ -37,7 +37,7 @@ container.register<IOrderService>('IOderService', {
 })
 
 // Register Payment service
-container.register<IPaymentService>('IPaymentService', {
+container.register<IPaymentGateway>('IPaymentGateway', {
     useClass: PaystackService
 })
 

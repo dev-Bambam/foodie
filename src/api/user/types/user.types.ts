@@ -59,6 +59,7 @@ export interface IAdminService {
 
    // CRUD on Customer/ User
    getAllCustomers(): Promise<TUserOutput[]>;
+   
 }
 
 export interface IUserRepository {
