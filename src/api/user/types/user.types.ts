@@ -1,4 +1,4 @@
-import { TPayment } from "../../payment/types/payment.type";
+import * as paymenttype from "../../payment/types/payment.type";
 import { IMenuItem } from "../../menu/types/menu.type";
 import * as ordertype from "../../order/types/order.type";
 import * as menutype from "../../menu/types/menu.type";
@@ -37,7 +37,7 @@ export interface ICustomerService {
    browseMenus(category?: string): Promise<IMenuItem[] | null>;
    getMenuDetails(menuId: string): Promise<IMenuItem | null>;
    placeOrder(input: ordertype.TPlaceOrderInput): Promise<ordertype.TPlaceOrderInput>;
-   makePayment(userId: string, orderId: string, amount: number): Promise<TPayment>;
+   makePayment<T extends keyof paymenttype.TPayment['paymentMethod']>(userId: string, orderId: string, amount: number, transactionId:string, paymentMethod:T): Promise<paymenttype.TPayment>;
 }
 
 // AdminService Interface
@@ -55,7 +55,7 @@ export interface IAdminService {
    deleteMenu(menuId: string): Promise<void>;
 
    // CRUD on Payment
-   updatePayment(paymentId: string): Promise<TPayment>;
+   updatePayment(paymentId: string): Promise<paymenttype.TPayment>;
 
    // CRUD on Customer/ User
    getAllCustomers(): Promise<TUserOutput[]>;

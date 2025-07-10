@@ -50,7 +50,7 @@ export class CustomerService implements ICustomerService {
       if (!user) {
          throw new BadRequestError('User not found', 'PAYMENT_ERR')
       }
-      const payment = await this.PaymentService.initializePayment(amount, user.email)
+      const payment = await this.PaymentService.createPayment()
       return payment
    }
 }
