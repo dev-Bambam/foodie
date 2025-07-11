@@ -44,13 +44,14 @@ export class CustomerService implements ICustomerService {
       return await this.OrderService.placeOrder(input)
    }
 
-   async makePayment(userId: string, orderId: string, amount: number): Promise<paymenttype.TPayment> {
+   async makePayment(paymentInput: paymenttype.TPaymentInput): Promise<paymenttype.TPayment> {
+      const { userId, paymentMethod } = paymentInput
       const user = await this.userRepository.findById(userId)
-      
-      if (!user) {
-         throw new BadRequestError('User not found', 'PAYMENT_ERR')
+      if (paymentMethod === 'cash') {
+         return {
+            message: 'success, proceed to make payment by cash'
+         }
       }
-      const payment = await this.PaymentService.createPayment()
-      return payment
+      
    }
 }

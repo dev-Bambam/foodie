@@ -1,14 +1,22 @@
 export type TPayment = {
    id: string;
    orderId: string;
-   userEmail: string;
+   userId: string;
    amount: number;
    status: "pending" | "successful" | "failed";
    paymentMethod: "bank transfer" | "cash";
    transactionId: string;
    createdAt: Date;
 };
-
+export type TPaystackReposnse =  {
+   status: boolean;
+   message: string;
+   data: {
+      authorization_url: string;
+      access_code: string;
+      reference: string;
+   };
+};
 export type TPaymentInput = Omit<TPayment, "id" | "status" | "createdAt">;
 export type TUpdatePayment = Partial<TPaymentInput>;
 

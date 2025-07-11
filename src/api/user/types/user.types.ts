@@ -37,7 +37,7 @@ export interface ICustomerService {
    browseMenus(category?: string): Promise<IMenuItem[] | null>;
    getMenuDetails(menuId: string): Promise<IMenuItem | null>;
    placeOrder(input: ordertype.TPlaceOrderInput): Promise<ordertype.TPlaceOrderInput>;
-   makePayment<T extends keyof paymenttype.TPayment['paymentMethod']>(userId: string, orderId: string, amount: number, transactionId:string, paymentMethod:T): Promise<paymenttype.TPayment>;
+   makePayment(paymentInput:paymenttype.TPaymentInput): Promise<paymenttype.TPayment>;
 }
 
 // AdminService Interface
