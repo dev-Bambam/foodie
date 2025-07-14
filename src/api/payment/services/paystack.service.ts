@@ -25,15 +25,15 @@ export class PaystackService implements paymenttype.IPaymentGateway {
             },
          }
       );
-      return response.data;
+      return response.data.data;
    }
 
-   async verifyPayment(paymentId: string): Promise<any> {
+   async verifyPayment(paymentId: string): Promise<paymenttype.TPaymentGatewayRes> {
       const response = await axios.get(`${this.baseUrl}/transaction/verify/${paymentId}`, {
          headers: {
             Authorization: `Bearer ${this.secretKey}`,
          },
       });
-      return response.data.data.authorization_url;
+      return response.data.data;
    }
 }

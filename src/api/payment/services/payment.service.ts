@@ -16,7 +16,7 @@ class PaymentService implements paymenttype.IPaymentService {
       const { amount, userId } = newPayment;
       const user = await this.UserRepo.findById(userId)
       const userEmail = user?.email
-      const initPayment = await this.PaymentGateway.initializePayment(amount, userEmail!);
+      const initializePayment = await this.PaymentGateway.initializePayment(amount, userEmail!);
       return newPayment;
    }
 
