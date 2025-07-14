@@ -6,18 +6,26 @@ export type TPayment = {
    status: "pending" | "successful" | "failed";
    paymentMethod: "bank transfer" | "cash";
    transactionId: string;
+   paymentGatewayResponse?: TPaymentGatewayRes
    createdAt: Date;
 };
+
 export type TPaystackReposnse =  {
    status: boolean;
    message: string;
+   data: TPaymentGatewayRes
+};
+
+export type TPaymentGatewayRes = {
    data: {
       authorization_url: string;
       access_code: string;
       reference: string;
    };
 };
+
 export type TPaymentInput = Omit<TPayment, "id" | "status" | "createdAt">;
+
 export type TUpdatePayment = Partial<TPaymentInput>;
 
 export interface IPaymentService {
@@ -27,10 +35,12 @@ export interface IPaymentService {
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
    deletePayment(paymentId: string): Promise<void>;
 }
+
 export interface IPaymentGateway {
-   initializePayment(amount: number, email: string, metadata?: any): Promise<any>;
-   verifyPayment(paymentId: string): Promise<any>;
+   initializePayment(amount: number, email: string, metadata?: any): Promise<TPaymentGatewayRes>;
+   verifyPayment(reference: string): Promise<any>;
 }
+
 export interface IPaymentRepo {
    // CRUD
    createPayment(payment: TPaymentInput): Promise<TPayment>;

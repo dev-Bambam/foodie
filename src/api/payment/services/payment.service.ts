@@ -1,18 +1,22 @@
 import { NotFoundError } from "../../../Utils/Error/CustomError";
 import * as paymenttype from "../types/payment.type";
 import { injectable, inject } from "tsyringe";
+import { UserRepository } from "../../user/repositories/user.repo";
 
 @injectable()
 class PaymentService implements paymenttype.IPaymentService {
    constructor(
       @inject("IPaymentRepo") private PaymentRepo: paymenttype.IPaymentRepo,
-      @inject("IPaymentGateway") private PaymentGateway: paymenttype.IPaymentGateway
+      @inject("IPaymentGateway") private PaymentGateway: paymenttype.IPaymentGateway,
+      @inject("IUserRepository") private UserRepo: UserRepository
    ) {}
 
    async createPayment(payment: paymenttype.TPaymentInput): Promise<paymenttype.TPayment> {
       const newPayment = await this.PaymentRepo.createPayment(payment);
-      const { amount, userEmail } = newPayment;
-      const initPayment = await this.PaymentGateway.initializePayment(amount, userEmail);
+      const { amount, userId } = newPayment;
+      const user = await this.UserRepo.findById(userId)
+      const userEmail = user?.email
+      const initPayment = await this.PaymentGateway.initializePayment(amount, userEmail!);
       return newPayment;
    }
 

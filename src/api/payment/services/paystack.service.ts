@@ -7,7 +7,7 @@ export class PaystackService implements paymenttype.IPaymentGateway {
    private secretKey = process.env.PAYSTACK_SECRET_KEY!;
    private baseUrl = "https://api.paystack.co";
 
-   async initializePayment(amount: number, email: string, metadata?: any): Promise<any> {
+   async initializePayment(amount: number, email: string, metadata?: any): Promise<paymenttype.TPaymentGatewayRes> {
       const response = await axios.post(
          `${this.baseUrl}/transactions/initialize`,
          {

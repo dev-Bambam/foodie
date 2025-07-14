@@ -12,9 +12,10 @@ const paymentSchema = new Schema<TPayment>({
    },
    paymentMethod: { type: String, enum: ["card", "cash"], required: true },
    transactionId: { type: String },
+   paymentGatewayResponse: { type: Object },
    createdAt: { type: Date, default: Date.now },
 });
-  
-const Payment = mongoose.model('Payment', paymentSchema)
 
-export default Payment
+const Payment = mongoose.model("Payment", paymentSchema);
+
+export default Payment;
