@@ -27,6 +27,17 @@ class PaymentService implements paymenttype.IPaymentService {
       return authorization_url
    }
 
+   async confirmPayment(paymentId: string): Promise<paymenttype.TPayment> {
+      const payment = await this.PaymentRepo.fetchAPayment(paymentId)
+      const reference = payment?.paymentGatewayResponse?.data.reference
+      const verifyPayment = await this.PaymentGateway.verifyPayment(reference!)
+      const paymentUpdate = await this.PaymentRepo.updatePayment(paymentId, {
+         paymentGatewayResponse: verifyPayment
+      })
+
+      return paymentUpdate
+   }
+
    async fetchAPayment(paymentId: string): Promise<paymenttype.TPayment> {
       const payment = await this.PaymentRepo.fetchAPayment(paymentId);
       if (!payment) {
