@@ -4,10 +4,10 @@ import { injectable } from "tsyringe";
 
 @injectable()
 export class PaystackService implements paymenttype.IPaymentGateway {
-   private secretKey = process.env.PAYSTACK_SECRET_KEY!;
+   private secretKey = process.env.PAYSTACK_TEST_KEY!;
    private baseUrl = "https://api.paystack.co";
 
-   async initializePayment(amount: number, email: string, metadata?: any): Promise<paymenttype.TPaymentGatewayRes> {
+   async initializePayment(amount: number, email: string, metadata?: any): Promise<paymenttype.TPaymentGatewayResponse> {
       const response = await axios.post(
          `${this.baseUrl}/transactions/initialize`,
          {
@@ -25,15 +25,15 @@ export class PaystackService implements paymenttype.IPaymentGateway {
             },
          }
       );
-      return response.data.data;
+      return response.data;
    }
 
-   async verifyPayment(paymentId: string): Promise<paymenttype.TPaymentGatewayRes> {
-      const response = await axios.get(`${this.baseUrl}/transaction/verify/${paymentId}`, {
+   async verifyPayment(reference: string): Promise<paymenttype.TPaymentGatewayResponse> {
+      const response = await axios.get(`${this.baseUrl}/transaction/verify/${reference}`, {
          headers: {
             Authorization: `Bearer ${this.secretKey}`,
          },
       });
-      return response.data.data;
+      return response.data;
    }
 }

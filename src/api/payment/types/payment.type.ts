@@ -6,17 +6,17 @@ export type TPayment = {
    status: "pending" | "successful" | "failed";
    paymentMethod: "bank transfer" | "cash";
    transactionId: string;
-   paymentGatewayResponse?: TPaymentGatewayRes;
+   paymentGatewayResponse?: TPaymentGatewayResponse;
    createdAt: Date;
 };
 
-export type TPaystackReposnse = {
+export type TPaymentGatewayResponse = {
    status: boolean;
    message: string;
-   data: TPaymentGatewayRes;
+   data: TPaymentGatewayResData;
 };
 
-export type TPaymentGatewayRes = {
+export type TPaymentGatewayResData = {
    authorization_url: string;
    access_code: string;
    reference: string;
@@ -27,7 +27,7 @@ export type TPaymentInput = Omit<TPayment, "id" | "status" | "createdAt">;
 export type TUpdatePayment = Partial<TPaymentInput>;
 
 export interface IPaymentService {
-   createPayment(payment: TPaymentInput): Promise<TPaymentGatewayRes['authorization_url']>;
+   createPayment<T extends keyof TPaymentGatewayResData['authorization_url']>(payment: TPaymentInput): Promise<T>;
    fetchAllPayment<T extends keyof TPayment["status"]>(status?: T): Promise<TPayment[]>;
    fetchAPayment(paymentId: string): Promise<TPayment>;
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
@@ -35,8 +35,8 @@ export interface IPaymentService {
 }
 
 export interface IPaymentGateway {
-   initializePayment(amount: number, email: string, metadata?: any): Promise<TPaymentGatewayRes>;
-   verifyPayment(reference: string): Promise<TPaymentGatewayRes>;
+   initializePayment(amount: number, email: string, metadata?: any): Promise<TPaymentGatewayResponse>;
+   verifyPayment(reference: string): Promise<TPaymentGatewayResponse>;
 }
 
 export interface IPaymentRepo {

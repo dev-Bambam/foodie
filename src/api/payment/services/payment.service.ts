@@ -11,13 +11,20 @@ class PaymentService implements paymenttype.IPaymentService {
       @inject("IUserRepository") private UserRepo: UserRepository
    ) {}
 
-   async createPayment(payment: paymenttype.TPaymentInput): Promise<paymenttype.TPayment> {
+   async createPayment<T extends keyof paymenttype.TPaymentGatewayResData["authorization_url"]>(
+      payment: paymenttype.TPaymentInput
+   ): Promise<T> {
       const newPayment = await this.PaymentRepo.createPayment(payment);
-      const { amount, userId } = newPayment;
-      const user = await this.UserRepo.findById(userId)
-      const userEmail = user?.email
-      const initializePayment = await this.PaymentGateway.initializePayment(amount, userEmail!);
-      return newPayment;
+      const { id, amount, userId } = newPayment;
+      const user = await this.UserRepo.findById(userId);
+      const userEmail = user?.email;
+      const paymentGatewayRes = await this.PaymentGateway.initializePayment(amount, userEmail!);
+      await this.PaymentRepo.updatePayment(id, {
+         paymentGatewayResponse: paymentGatewayRes
+      });
+
+      const authorization_url = paymentGatewayRes.data.authorization_url as T
+      return authorization_url
    }
 
    async fetchAPayment(paymentId: string): Promise<paymenttype.TPayment> {
