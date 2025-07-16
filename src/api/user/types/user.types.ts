@@ -24,6 +24,7 @@ export type TUserAddress = {
 };
 
 export type TUserOutput = Omit<TUser, "password" | 'updatedAt'> & { token: string };
+
 export type TCustomerRegisterationInput = Pick<
    TUser,
    "name" | "email" | "address" | "phone" | "password"
@@ -37,7 +38,7 @@ export interface ICustomerService {
    browseMenus(category?: string): Promise<IMenuItem[] | null>;
    getMenuDetails(menuId: string): Promise<IMenuItem | null>;
    placeOrder(input: ordertype.TPlaceOrderInput): Promise<ordertype.TPlaceOrderInput>;
-   makePayment(paymentInput:paymenttype.TPaymentInput): Promise<paymenttype.TPayment>;
+   makePayment(paymentInput:paymenttype.TPaymentInput): Promise<paymenttype.TPaymentGatewayResData['authorization_url']>;
 }
 
 // AdminService Interface
@@ -55,10 +56,10 @@ export interface IAdminService {
    deleteMenu(menuId: string): Promise<void>;
 
    // CRUD on Payment
-   updatePayment(paymentId: string): Promise<paymenttype.TPayment>;
+   confirmPayment(paymentId: string): Promise<paymenttype.TPayment>;
 
    // CRUD on Customer/ User
-   getAllCustomers(): Promise<TUserOutput[]>;
+   getAllCustomers(): Promise<TUser[]>;
    
 }
 

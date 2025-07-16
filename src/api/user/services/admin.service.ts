@@ -1,9 +1,9 @@
 import * as usertype from "../types/user.types";
 import * as menutype from "../../menu/types/menu.type";
 import * as ordertype from "../../order/types/order.type";
-import { TPayment } from "../../payment/types/payment.type";
+import * as paymenttype from "../../payment/types/payment.type";
 import { injectable, inject } from "tsyringe";
-import { AuthService } from "../../auth/services/auth.service";
+import { IAuthService } from "../../auth/types/auth.types"
 
 @injectable()
 export class AdminService implements usertype.IAdminService {
@@ -11,12 +11,13 @@ export class AdminService implements usertype.IAdminService {
       @inject("IMenuService") private MenuService: menutype.IMenuService,
       @inject("IOderService") private OrderService: ordertype.IOrderService,
       @inject("IUserRepository") private UserRepo: usertype.IUserRepository,
-      @inject("IAuthService") private AUthService: AuthService
+      @inject("IAuthService") private AuthService: IAuthService,
+      @inject('IPaymentService') private PaymentService: paymenttype.IPaymentService
    ) {}
 
    // Authentication
    async login(input: usertype.TLoginInput): Promise<usertype.TUserOutput> {
-      const user = await this.AUthService.login(input)
+      const user = await this.AuthService.login(input)
       return user
    }
 
@@ -51,9 +52,9 @@ export class AdminService implements usertype.IAdminService {
    }
 
    // CRUD on Payment
-   async updatePayment(paymentId: string): Promise<TPayment> {
-      // Implement your payment update logic here
-      throw new Error("Not implemented");
+   async confirmPayment(paymentId: string): Promise<paymenttype.TPayment> {
+      const payment = await this.PaymentService.confirmPayment(paymentId)
+      return payment
    }
 
    // CRUD on Customer/ User

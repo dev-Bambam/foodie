@@ -27,9 +27,9 @@ export type TPaymentInput = Omit<TPayment, "id" | "status" | "createdAt">;
 export type TUpdatePayment = Partial<TPaymentInput>;
 
 export interface IPaymentService {
-   createPayment<T extends keyof TPaymentGatewayResData["authorization_url"]>(
+   createPayment(
       payment: TPaymentInput
-   ): Promise<T>;
+   ): Promise<string>;
    confirmPayment(paymentId: string): Promise<TPayment>;
    fetchAllPayment<T extends keyof TPayment["status"]>(status?: T): Promise<TPayment[]>;
    fetchAPayment(paymentId: string): Promise<TPayment>;

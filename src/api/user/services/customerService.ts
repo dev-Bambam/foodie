@@ -9,8 +9,9 @@ import {
 import { injectable, inject } from "tsyringe";
 import { IMenuItem, IMenuService } from "../../menu/types/menu.type";
 import { IOrderService, TPlaceOrderInput } from "../../order/types/order.type";
-import * as paymenttype from "../../payment/types/payment.type";
-import { AuthService } from "../../auth/services/auth.service";
+// import * as paymenttype from "../../payment/types/payment.type";
+import { TPaymentInput, TPaymentGatewayResData, IPaymentService } from "../../payment/types/payment.type";
+import { IAuthService } from "../../auth/types/auth.types";
 
 
 @injectable()
@@ -19,8 +20,8 @@ export class CustomerService implements ICustomerService {
       @inject("IUserRepository") private userRepository: IUserRepository,
       @inject("IMenuService") private MenuService: IMenuService,
       @inject('IOderService') private OrderService: IOrderService,
-      @inject('IPaymentService') private PaymentService: paymenttype.IPaymentService,
-      @inject('IAuthService') private AuthService: AuthService
+      @inject('IPaymentService') private PaymentService: IPaymentService,
+      @inject('IAuthService') private AuthService: IAuthService
    ) {}
 
    async register(customer: TCustomerRegisterationInput): Promise<TUserOutput> {
@@ -44,14 +45,13 @@ export class CustomerService implements ICustomerService {
       return await this.OrderService.placeOrder(input)
    }
 
-   async makePayment(paymentInput: paymenttype.TPaymentInput): Promise<paymenttype.TPayment> {
-      const { userId, paymentMethod } = paymentInput
-      const user = await this.userRepository.findById(userId)
+   async makePayment(paymentInput: TPaymentInput): Promise<TPaymentGatewayResData['authorization_url']> {
+      const { paymentMethod } = paymentInput
       if (paymentMethod === 'cash') {
-         return {
-            message: 'success, proceed to make payment by cash'
-         }
+         return 'success, proceed to make payment with cash'
       }
-      
+      const payment_url = await this.PaymentService.createPayment(paymentInput)
+
+      return payment_url
    }
 }

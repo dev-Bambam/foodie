@@ -11,9 +11,9 @@ class PaymentService implements paymenttype.IPaymentService {
       @inject("IUserRepository") private UserRepo: UserRepository
    ) {}
 
-   async createPayment<T extends keyof paymenttype.TPaymentGatewayResData["authorization_url"]>(
+   async createPayment(
       payment: paymenttype.TPaymentInput
-   ): Promise<T> {
+   ): Promise<string> {
       const newPayment = await this.PaymentRepo.createPayment(payment);
       const { id, amount, userId } = newPayment;
       const user = await this.UserRepo.findById(userId);
@@ -23,7 +23,7 @@ class PaymentService implements paymenttype.IPaymentService {
          paymentGatewayResponse: paymentGatewayRes
       });
 
-      const authorization_url = paymentGatewayRes.data.authorization_url as T
+      const authorization_url = paymentGatewayRes.data.authorization_url 
       return authorization_url
    }
 
