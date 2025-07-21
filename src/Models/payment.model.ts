@@ -10,8 +10,7 @@ const paymentSchema = new Schema<TPayment>({
       enum: ["pending", "completed", "failed"],
       default: "pending",
    },
-   paymentMethod: { type: String, enum: ["card", "cash"], required: true },
-   transactionId: { type: String },
+   paymentMethod: { type: String, enum: ["bank transfer", "cash"], required: true },
    paymentGatewayResponse: { type: Object },
    createdAt: { type: Date, default: Date.now },
 });

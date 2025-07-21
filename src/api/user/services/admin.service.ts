@@ -22,11 +22,9 @@ export class AdminService implements usertype.IAdminService {
    }
 
    // CRUD Order
-   async fetchAllOrder<T extends keyof ordertype.TOrder["status"]>(
-      status?: T
-   ): Promise<ordertype.TOrder[]> {
-      return await this.OrderService.fetchAllOrder(status);
-   }
+  async fetchAllOrder<T extends ordertype.TOrder["status"]>(status?: T): Promise<ordertype.TOrder[]> {
+   return await this.OrderService.fetchAllOrder(status);
+  }
 
    async updateOrder(
       orderId: string,

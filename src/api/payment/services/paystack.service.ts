@@ -15,7 +15,7 @@ export class PaystackService implements paymenttype.IPaymentGateway {
             amount: amount * 100,
             callback_url: `${process.env.PORT}/payment-success?transactionId=${metadata}`,
             metadata: {
-               transactionId: metadata
+               orderId: metadata
             }
          },
          {
@@ -35,5 +35,9 @@ export class PaystackService implements paymenttype.IPaymentGateway {
          },
       });
       return response.data;
+   }
+
+   async handleWebHook(payload: any): Promise<void> {
+      
    }
 }

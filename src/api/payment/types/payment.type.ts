@@ -5,7 +5,6 @@ export type TPayment = {
    amount: number;
    status: "pending" | "successful" | "failed";
    paymentMethod: "bank transfer" | "cash";
-   transactionId: string;
    paymentGatewayResponse?: TPaymentGatewayResponse;
    createdAt: Date;
 };
@@ -24,17 +23,20 @@ export type TPaymentGatewayResData = {
 
 export type TPaymentInput = Omit<TPayment, "id" | "status" | "createdAt">;
 
-export type TUpdatePayment = Partial<TPaymentInput>;
+export type TUpdatePayment = Partial<TPayment>;
 
 export interface IPaymentService {
    createPayment(
       payment: TPaymentInput
    ): Promise<string>;
    confirmPayment(paymentId: string): Promise<TPayment>;
-   fetchAllPayment<T extends keyof TPayment["status"]>(status?: T): Promise<TPayment[]>;
+   fetchAllPayment<T extends TPayment["status"]>(status?: T): Promise<TPayment[]>;
    fetchAPayment(paymentId: string): Promise<TPayment>;
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
    deletePayment(paymentId: string): Promise<void>;
+   generateWebHookHash(payload: string): string
+   processSuccessfulCharegeWebHook(data: any): Promise<void>
+   handlePaymentWebhook(payload:any, signature:string): Promise<void>
 }
 
 export interface IPaymentGateway {
@@ -45,8 +47,9 @@ export interface IPaymentGateway {
 export interface IPaymentRepo {
    // CRUD
    createPayment(payment: TPaymentInput): Promise<TPayment>;
-   fetchAllPayment<T extends keyof TPayment["status"]>(status?: T): Promise<TPayment[]>;
+   fetchAllPayment<T extends TPayment["status"]>(status?: T): Promise<TPayment[]>;
    fetchAPayment(paymentId: string): Promise<TPayment | null>;
+   fetchAPaymentByOrderID(orderId:string) : Promise<TPayment | null>
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
    deletePayment(paymentId: string): Promise<void>;
 }

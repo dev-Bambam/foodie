@@ -3,7 +3,7 @@ import Payment from "../../../Models/payment.model";
 
 export class PaymentRepo implements paymenttype.IPaymentRepo {
    async createPayment(payment: paymenttype.TPayment): Promise<paymenttype.TPayment> {
-      const { id, orderId, amount, userId, status, paymentMethod, transactionId, createdAt } = await Payment.create(payment); 
+      const { id, orderId, amount, userId, status, paymentMethod, createdAt } = await Payment.create(payment); 
 
       return {
          id,
@@ -12,7 +12,6 @@ export class PaymentRepo implements paymenttype.IPaymentRepo {
          userId,
          status,
          paymentMethod,
-         transactionId,
          createdAt,
       };
    }
@@ -23,7 +22,7 @@ export class PaymentRepo implements paymenttype.IPaymentRepo {
       return payment
    }
 
-   async fetchAllPayment<T extends keyof paymenttype.TPayment["status"]>(status?: T): Promise<paymenttype.TPayment[]> {
+   async fetchAllPayment<T extends  paymenttype.TPayment["status"]>(status?: T): Promise<paymenttype.TPayment[]> {
       let allPayment;
       if (status) {
          allPayment = await Payment.find({ status })
@@ -45,5 +44,11 @@ export class PaymentRepo implements paymenttype.IPaymentRepo {
          { new: true }
       );
       return updatedPayment as paymenttype.TPayment;
+   }
+
+   async fetchAPaymentByOrderID(orderId: string): Promise<paymenttype.TPayment | null> {
+      const payment = await Payment.findOne({ orderId })
+      
+      return payment 
    }
 }

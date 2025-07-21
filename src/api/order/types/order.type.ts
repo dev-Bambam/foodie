@@ -2,11 +2,13 @@
 import { TUserAddress } from "../../user/types/user.types";
 
 export type TOrder = {
+   id:string
    userId: string;
    items: TItems;
    totalPrice: number;
    status: "pending" | "confirmed" | "delivered" | "cancelled";
    deliveryAddress: TUserAddress;
+   createdAt:Date
 };
 
 export type TItems = {
@@ -17,7 +19,7 @@ export type TItems = {
    }>
 }
 
-export type TPlaceOrderInput = Pick<TOrder, 'userId' | 'items' | 'totalPrice' | 'deliveryAddress'>
+export type TPlaceOrderInput = Pick<TOrder, 'id' |'userId' | 'items' | 'totalPrice' | 'deliveryAddress'|'createdAt'>
 
 export type TOrderOutput = Pick<TOrder, "userId" | "items" | "totalPrice" | "deliveryAddress"> & {
    status: 'pending'
