@@ -69,12 +69,12 @@ export class PaymentService implements paymenttype.IPaymentService {
       return updatedPayment;
    }
 
-   private generateWebHookHash(payload: string): string {
+   public generateWebHookHash(payload: string): string {
       const secretKey = process.env.PAYSTACK_TEST_KEY!;
       return crypto.createHmac("sha512", secretKey).update(payload).digest("hex");
    }
 
-   private async processSuccessfulCharegeWebHook(data: any): Promise<void> {
+   async processSuccessfulCharegeWebHook(data: any): Promise<void> {
       const { reference, metadata } = data;
 
       if (metadata && metadata.orderId) {
