@@ -22,7 +22,7 @@ export class AdminService implements usertype.IAdminService {
    }
 
    // CRUD Order
-   async fetchAllOrder<T extends ordertype.TOrder["status"]>(
+   async fetchAllOrder<T extends keyof ordertype.TOrder["status"]>(
       status?: T
    ): Promise<ordertype.TOrder[]> {
       return await this.OrderService.fetchAllOrder(status);
@@ -58,8 +58,8 @@ export class AdminService implements usertype.IAdminService {
    }
 
    // CRUD on Customer/ User
-  async getAllCustomers(): Promise<usertype.TUserOutput[]> {
+  async getAllCustomers(): Promise<usertype.TUser[]> {
      const allCustomer = await this.UserRepo.fetchAllCustomer()
-     return allCustomer 
+     return allCustomer
   }
 }

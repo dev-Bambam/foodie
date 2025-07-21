@@ -27,7 +27,7 @@ export class AuthService implements authtype.IAuthService {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role as "customer",
+          role: user.role,
           phone: user.phone,
           address: user.address,
           createdAt: user.createdAt,

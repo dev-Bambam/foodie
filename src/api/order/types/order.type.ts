@@ -1,12 +1,12 @@
 
-import { TAddress } from "../../user/types/user.types";
+import { TUserAddress } from "../../user/types/user.types";
 
 export type TOrder = {
    userId: string;
    items: TItems;
    totalPrice: number;
    status: "pending" | "confirmed" | "delivered" | "cancelled";
-   deliveryAddress: TAddress;
+   deliveryAddress: TUserAddress;
 };
 
 export type TItems = {

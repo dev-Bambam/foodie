@@ -4,7 +4,7 @@ import { injectable, inject } from "tsyringe";
 import { UserRepository } from "../../user/repositories/user.repo";
 
 @injectable()
-class PaymentService implements paymenttype.IPaymentService {
+export class PaymentService implements paymenttype.IPaymentService {
    constructor(
       @inject("IPaymentRepo") private PaymentRepo: paymenttype.IPaymentRepo,
       @inject("IPaymentGateway") private PaymentGateway: paymenttype.IPaymentGateway,

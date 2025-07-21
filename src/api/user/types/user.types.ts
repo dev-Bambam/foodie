@@ -47,7 +47,7 @@ export interface IAdminService {
    login(input: TLoginInput): Promise<TUserOutput>;
 
    // CRUD Order
-   fetchAllOrder<T extends ordertype.TOrder["status"]>(status?: T): Promise<ordertype.TOrder[]>;
+   fetchAllOrder<T extends keyof ordertype.TOrder["status"]>(status?: T): Promise<ordertype.TOrder[]>;
    updateOrder(orderId: string, orderData: ordertype.TOrderUpdate): Promise<ordertype.TOrder>;
 
    // CRUD on Menu

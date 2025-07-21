@@ -3,13 +3,13 @@ import Payment from "../../../Models/payment.model";
 
 export class PaymentRepo implements paymenttype.IPaymentRepo {
    async createPayment(payment: paymenttype.TPayment): Promise<paymenttype.TPayment> {
-      const { id, orderId, amount, userEmail, status, paymentMethod, transactionId, createdAt } = await Payment.create(payment); 
+      const { id, orderId, amount, userId, status, paymentMethod, transactionId, createdAt } = await Payment.create(payment); 
 
       return {
          id,
          orderId,
          amount,
-         userEmail,
+         userId,
          status,
          paymentMethod,
          transactionId,

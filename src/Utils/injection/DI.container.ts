@@ -5,7 +5,7 @@ import { IMenuRepo, IMenuService } from "../../api/menu/types/menu.type";
 import { MenuRepo } from "../../api/menu/repositories/menu.repo";
 import { OrderRepo } from "../../api/order/repositories/order.repo";
 import { IOrderRepo, IOrderService } from "../../api/order/types/order.type";
-import { IPaymentGateway, IPaymentService } from "../../api/payment/types/payment.type";
+import { IPaymentGateway, IPaymentRepo, IPaymentService } from "../../api/payment/types/payment.type";
 import { PaystackService } from "../../api/payment/services/paystack.service";
 import { CustomerService } from "../../api/user/services/customerService";
 import { MenuService } from "../../api/menu/services/menu.service";
@@ -13,6 +13,8 @@ import { OrderService } from "../../api/order/services/order.service";
 import { AdminService } from "../../api/user/services/admin.service";
 import { IAuthService } from "../../api/auth/types/auth.types";
 import { AuthService } from "../../api/auth/services/auth.service";
+import { PaymentService } from "../../api/payment/services/payment.service";
+import { PaymentRepo } from "../../api/payment/repositories/payment.repo";
 
 // Register UserRepository with the User Service
 container.register<IUserRepository>('IUserRepository', {
@@ -39,6 +41,12 @@ container.register<IOrderService>('IOderService', {
 // Register Payment service
 container.register<IPaymentGateway>('IPaymentGateway', {
     useClass: PaystackService
+})
+container.register<IPaymentService>('IPaymentService', {
+    useClass: PaymentService
+})
+container.register<IPaymentRepo>('IPaymentRepo', {
+    useClass: PaymentRepo
 })
 
 // Register Customer Service

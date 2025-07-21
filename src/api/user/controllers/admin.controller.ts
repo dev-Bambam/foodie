@@ -58,3 +58,25 @@ export const getAllCustomers = async (req: Request, res: Response) => {
       data: { customers },
    });
 };
+
+export const login = async (req: Request, res: Response) => {
+   const { email, password } = req.body
+   const user = await AdminService.login({ email, password })
+   res.status(200).json({
+      status: 'success',
+      data: {
+         user
+      }
+   })
+}
+
+export const confirmPayment = async (req: Request, res: Response) => {
+   const { paymentId } = req.params
+   const payment = await AdminService.confirmPayment(paymentId)
+   res.status(200).json({
+      status: 'success',
+      data: {
+         payment
+      }
+   })
+}
