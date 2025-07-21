@@ -8,11 +8,13 @@ export class OrderRepo implements ordertype.IOrderRepo {
       const newOrder = await Order.create(orderInput);
 
       return {
+         id: newOrder.id,
          userId: newOrder.userId,
          items: newOrder.items,
          totalPrice: newOrder.totalPrice,
          deliveryAddress: newOrder.deliveryAddress,
          status: newOrder.status as "pending",
+         createdAt: newOrder.createdAt
       };
    }
    async fetchAllOrder<T extends ordertype.TOrder["status"]>(

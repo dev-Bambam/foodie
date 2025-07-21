@@ -19,9 +19,9 @@ export type TItems = {
    }>
 }
 
-export type TPlaceOrderInput = Pick<TOrder, 'id' |'userId' | 'items' | 'totalPrice' | 'deliveryAddress'|'createdAt'>
+export type TPlaceOrderInput = Pick<TOrder, 'userId' | 'items' | 'totalPrice' | 'deliveryAddress'>
 
-export type TOrderOutput = Pick<TOrder, "userId" | "items" | "totalPrice" | "deliveryAddress"> & {
+export type TOrderOutput = Pick<TOrder,'id' | "userId" | "items" | "totalPrice" | "deliveryAddress" |'createdAt'> & {
    status: 'pending'
 };
 export type TOrderUpdate = Partial<TOrder>
