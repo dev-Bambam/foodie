@@ -6,7 +6,7 @@ import app from "./src/app";
 import DatabaseConnect from "./config/db.config";
 
 DatabaseConnect();
-const port = process.env.PORT || 3070;
+const port = process.env.LIVE_URL ??  process.env.PORT;
 
 app.listen(port, () => {
    console.log(`server listening at port:${port}`);

@@ -5,7 +5,7 @@ import { container } from "tsyringe";
 const PaymentService = container.resolve<IPaymentService>("IPaymentService")
 
 export const webhookHandler = async (req: Request, res: Response) => {
-    const signature = req.headers['x-paystacl-signature'] as string
+    const signature = req.headers['x-paystack-signature'] as string
     
     await PaymentService.handlePaymentWebhook({ body: req.body, headers: req.headers }, signature)
     

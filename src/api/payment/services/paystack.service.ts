@@ -9,11 +9,11 @@ export class PaystackService implements paymenttype.IPaymentGateway {
 
    async initializePayment(amount: number, email: string, metadata?: any): Promise<paymenttype.TPaymentGatewayResponse> {
       const response = await axios.post(
-         `${this.baseUrl}/transactions/initialize`,
+         `${this.baseUrl}/transaction/initialize`,
          {
             email,
             amount: amount * 100,
-            callback_url: `${process.env.PORT}/payment-success?transactionId=${metadata}`,
+            callback_url: `${process.env.PORT}/confirm-payment?orderId=${metadata}`,
             metadata: {
                orderId: metadata
             }
@@ -36,8 +36,5 @@ export class PaystackService implements paymenttype.IPaymentGateway {
       });
       return response.data;
    }
-
-   async handleWebHook(payload: any): Promise<void> {
-      
-   }
+   
 }

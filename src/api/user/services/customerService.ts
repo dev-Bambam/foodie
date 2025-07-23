@@ -71,4 +71,15 @@ export class CustomerService implements ICustomerService {
 
       return payment_url;
    }
+
+   async confirmPayment(orderId: string): Promise<string >{
+      const updatedPayment = await this.PaymentService.confirmPayment(orderId)
+      if (updatedPayment.status as 'failed' === 'failed') {
+         return `Payment failed for order:${orderId}`
+      } else if (updatedPayment.status as 'pending' === 'pending') {
+         return `Payment still pending for order:${orderId}, please try again`
+      }
+
+      return `Payment successful for order:${orderId}, thanks for your patronage`
+   }
 }

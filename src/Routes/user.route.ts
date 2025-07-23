@@ -9,5 +9,6 @@ router.get("/menus", UserController.browseMenus);
 router.get("/menus/:menuId", UserController.getMenuDetails);
 router.post("/orders", UserController.placeOrder);
 router.post("/payments", UserController.makePayment);
+router.get('/confirm-payment', UserController.confirmPayment)
 
 export default router

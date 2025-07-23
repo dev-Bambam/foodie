@@ -3,11 +3,11 @@ import { container } from "tsyringe";
 import { ICustomerService } from "../types/user.types";
 
 // Resolve the service from the DI container
-const customerService = container.resolve<ICustomerService>("ICustomerService");
+const CustomerService = container.resolve<ICustomerService>("ICustomerService");
 
 export const register = async (req: Request, res: Response) => {
-   const newCustomer = req.body
-   const customer = await customerService.register(newCustomer);
+   const newCustomer = req.body;
+   const customer = await CustomerService.register(newCustomer);
    res.status(201).json({
       status: "success",
       data: {
@@ -18,7 +18,7 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
    const { email, password } = req.body;
-   const customer = await customerService.login({ email, password });
+   const customer = await CustomerService.login({ email, password });
    res.status(200).json({
       status: "success",
       data: {
@@ -29,8 +29,8 @@ export const login = async (req: Request, res: Response) => {
 
 export const browseMenus = async (req: Request, res: Response) => {
    const category = req.query.category as string;
-   console.log(`category:${category}`)
-   const menus = await customerService.browseMenus(category);
+   console.log(`category:${category}`);
+   const menus = await CustomerService.browseMenus(category);
    res.status(200).json({
       status: "success",
       data: {
@@ -41,7 +41,7 @@ export const browseMenus = async (req: Request, res: Response) => {
 
 export const getMenuDetails = async (req: Request, res: Response) => {
    const { menuId } = req.params;
-   const menu = await customerService.getMenuDetails(menuId);
+   const menu = await CustomerService.getMenuDetails(menuId);
    res.status(200).json({
       status: "success",
       data: {
@@ -52,22 +52,33 @@ export const getMenuDetails = async (req: Request, res: Response) => {
 
 export const placeOrder = async (req: Request, res: Response) => {
    const newOrder = req.body;
-   const order = await customerService.placeOrder(newOrder);
+   const order = await CustomerService.placeOrder(newOrder);
    res.status(201).json({
-      status: "success", 
+      status: "success",
       data: {
-         order
-      }
+         order,
+      },
    });
 };
 
 export const makePayment = async (req: Request, res: Response) => {
    const paymentData = req.body;
-   const payment_url = await customerService.makePayment(paymentData);
+   const payment_url = await CustomerService.makePayment(paymentData);
    res.status(200).json({
       status: "success",
       data: {
-         payment_url
-      }
+         payment_url,
+      },
    });
+};
+
+export const confirmPayment = async (req: Request, res: Response) => {
+   const orderId  = req.query.orderId as string
+   const response = await CustomerService.confirmPayment(orderId)
+   res.status(200).json({
+      status: 'success',
+      data: {
+         response
+      }
+   })
 };

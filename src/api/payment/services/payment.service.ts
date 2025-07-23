@@ -30,11 +30,11 @@ export class PaymentService implements paymenttype.IPaymentService {
       return authorization_url;
    }
 
-   async confirmPayment(paymentId: string): Promise<paymenttype.TPayment> {
-      const payment = await this.PaymentRepo.fetchAPayment(paymentId);
+   async confirmPayment(orderId: string): Promise<paymenttype.TPayment> {
+      const payment = await this.PaymentRepo.fetchAPaymentByOrderID(orderId);
       const reference = payment?.paymentGatewayResponse?.data.reference;
       const verifyPayment = await this.PaymentGateway.verifyPayment(reference!);
-      const paymentUpdate = await this.PaymentRepo.updatePayment(paymentId, {
+      const paymentUpdate = await this.PaymentRepo.updatePayment(payment!.id, {
          paymentGatewayResponse: verifyPayment,
       });
 
@@ -122,4 +122,6 @@ export class PaymentService implements paymenttype.IPaymentService {
          throw new Error("Invlaid paystack webhook signature");
       }
    }
+
+ 
 }
