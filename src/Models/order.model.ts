@@ -6,7 +6,7 @@ const orderSchema = new Schema<TOrder>(
       userId: { type: String, ref: "User", required: true },
       items: [
          {
-            menuId: { type: Schema.Types.ObjectId, ref: "Menu", required: true },
+            menuId: { type: String, ref: "Menu", required: true },
             quantity: { type: Number, required: true, min: 1 },
             price: { type: Number, required: true, min: 0 },
          },

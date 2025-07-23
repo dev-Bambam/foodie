@@ -69,48 +69,57 @@ export class PaymentService implements paymenttype.IPaymentService {
       return updatedPayment;
    }
 
-   public generateWebHookHash(payload: string): string {
+   public generateWebhookHash(payload: string): string {
       const secretKey = process.env.PAYSTACK_TEST_KEY!;
       return crypto.createHmac("sha512", secretKey).update(payload).digest("hex");
    }
 
-   async processSuccessfulCharegeWebHook(data: any): Promise<void> {
-      const { reference, metadata } = data;
+  async processChargeWebhook(data: any, update: paymenttype.update): Promise<void> {
+   const { metadata } = data;
 
-      if (metadata && metadata.orderId) {
-         const payment = await this.PaymentRepo.fetchAPaymentByOrderID(metadata.orderId);
-         if (payment && payment.status !== "successful") {
-            await this.PaymentRepo.updatePayment(payment.id, {
-               status: "successful",
-               paymentGatewayResponse: {
-                  status: true,
-                  message: "Payment Successful via Paystack",
-                  data,
-               },
-            });
-         }
+   if (metadata && metadata.orderId) {
+      const payment = await this.PaymentRepo.fetchAPaymentByOrderID(metadata.orderId);
+      if (payment && payment.status !== "successful") {
+         await this.PaymentRepo.updatePayment(payment.id, {
+            status: update.status1 as "successful",
+            paymentGatewayResponse: {
+               status: update.status2,
+               message: update.message,
+               data,
+            },
+         });
       }
    }
+  }
 
    async handlePaymentWebhook(payload: any, signature: string): Promise<void> {
-      const expectedHash = this.generateWebHookHash(JSON.stringify(payload.body));
+      const expectedHash = this.generateWebhookHash(JSON.stringify(payload.body));
       if (signature && expectedHash === signature) {
          const event = payload.body.event;
          const data = payload.body.data;
 
          switch (event) {
             case "charge.success":
-               await this.processSuccessfulCharegeWebHook(data);
+               let update = {
+                  status1: "successful",
+                  status2: true,
+                  message: "Payment successful through webhook",
+               };
+               await this.processChargeWebhook(data, update);
                break;
             case "charge.fail":
-               await this.processSuccessfulCharegeWebHook(data);
+               update = {
+                  status1: "failed",
+                  status2: false,
+                  message: "Payment failure through webhook",
+               };
+               await this.processChargeWebhook(data, update);
             default:
                throw new Error("Unhandle paystack webhook coming from handlePaymentWebhook");
                break;
          }
       } else {
-         throw new Error("Invlaid paystack webhook signature")
+         throw new Error("Invlaid paystack webhook signature");
       }
    }
 }
- 

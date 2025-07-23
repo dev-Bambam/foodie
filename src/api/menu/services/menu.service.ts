@@ -11,8 +11,8 @@ export class MenuService implements menutype.IMenuService{
         let menus
         if (menuCategory) {
             menus = await this.MenuRepo.getAllMenu(category)
-            if (!menus) {
-                throw new NotFoundError('Food Category not Found')
+            if (menus?.length === 0) {
+               throw new NotFoundError("Food Category not Found");
             }
             return menus
         }

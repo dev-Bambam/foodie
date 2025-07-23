@@ -16,7 +16,7 @@ const globalErrorHandler = async (err: BaseError, _req: Request, res: Response, 
 
     if (!err.isOperational) {
         console.error("Server Error:", util.inspect(err, { depth: null, colors: true }));
-        message = 'Something is wrong'
+        message = `Error coming from server:${err.message}`
     }
 
     res.status(statusCode).json({

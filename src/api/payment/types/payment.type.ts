@@ -24,6 +24,11 @@ export type TPaymentGatewayResData = {
 export type TPaymentInput = Omit<TPayment, "id" | "status" | "createdAt">;
 
 export type TUpdatePayment = Partial<TPayment>;
+export type update = {
+   status1: string
+   status2: boolean
+   message: string
+}
 
 export interface IPaymentService {
    createPayment(
@@ -34,8 +39,8 @@ export interface IPaymentService {
    fetchAPayment(paymentId: string): Promise<TPayment>;
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
    deletePayment(paymentId: string): Promise<void>;
-   generateWebHookHash(payload: string): string
-   processSuccessfulCharegeWebHook(data: any): Promise<void>
+   generateWebhookHash(payload: string): string
+   processChargeWebhook(data: any, update:update): Promise<void>
    handlePaymentWebhook(payload:any, signature:string): Promise<void>
 }
 

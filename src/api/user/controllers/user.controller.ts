@@ -29,6 +29,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const browseMenus = async (req: Request, res: Response) => {
    const category = req.query.category as string;
+   console.log(`category:${category}`)
    const menus = await customerService.browseMenus(category);
    res.status(200).json({
       status: "success",

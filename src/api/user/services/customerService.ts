@@ -28,13 +28,13 @@ export class CustomerService implements ICustomerService {
    ) {}
 
    async register(customer: TCustomerRegisterationInput): Promise<TUserOutput> {
-      const customerExist = await this.userRepository.findByEmail(customer.email);
+      const { email, password } = customer
+      const customerExist = await this.userRepository.findByEmail(email);
       if (customerExist) {
          throw new BadRequestError("User already exist", "DUPLICATE_ENTRY_ERR");
       }
 
-      let newCustomer = await this.userRepository.create(customer);
-      const { email, password } = newCustomer;
+      await this.userRepository.create(customer);
       const customerLogin = await this.AuthService.login({ email, password });
 
       return customerLogin;

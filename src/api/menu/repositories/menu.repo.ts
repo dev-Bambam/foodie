@@ -5,6 +5,9 @@ import { injectable } from "tsyringe";
 @injectable()
 export class MenuRepo implements menutype.IMenuRepo{
     async getAllMenu(category?: string): Promise<menutype.IMenuItem[] | null> {
+        if (!category) {
+            return await Menu.find()
+        }
         return await Menu.find({category: category})
     }
     async findMenuById(menuId: string): Promise<menutype.IMenuItem | null> {
