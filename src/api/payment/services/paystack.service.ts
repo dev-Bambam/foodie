@@ -13,7 +13,7 @@ export class PaystackService implements paymenttype.IPaymentGateway {
          {
             email,
             amount: amount * 100,
-            callback_url: `${process.env.PORT}/confirm-payment?orderId=${metadata}`,
+            // callback_url: `${process.env.PORT}/confirm-payment?orderId=${metadata}`,
             metadata: {
                orderId: metadata
             }

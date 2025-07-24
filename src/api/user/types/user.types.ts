@@ -39,7 +39,7 @@ export interface ICustomerService {
    getMenuDetails(menuId: string): Promise<IMenuItem | null>;
    placeOrder(input: ordertype.TPlaceOrderInput): Promise<ordertype.TPlaceOrderInput>;
    makePayment(paymentInput: paymenttype.TPaymentInput): Promise<paymenttype.TPaymentGatewayResData['authorization_url']>;
-   confirmPayment(orderId:string): Promise<string>
+   confirmPayment(reference:string): Promise<string>
 }
 
 // AdminService Interface

@@ -35,7 +35,7 @@ export interface IPaymentService {
    createPayment(
       payment: TPaymentInput
    ): Promise<string>;
-   confirmPayment(orderId: string): Promise<TPayment>;
+   confirmPayment(reference: string): Promise<TPayment>;
    fetchAllPayment<T extends TPayment["status"]>(status?: T): Promise<TPayment[]>;
    fetchAPayment(paymentId: string): Promise<TPayment>;
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
@@ -55,7 +55,8 @@ export interface IPaymentRepo {
    createPayment(payment: TPaymentInput): Promise<TPayment>;
    fetchAllPayment<T extends TPayment["status"]>(status?: T): Promise<TPayment[]>;
    fetchAPayment(paymentId: string): Promise<TPayment | null>;
-   fetchAPaymentByOrderID(orderId:string) : Promise<TPayment | null>
+   fetchAPaymentByReference(reference: string): Promise<TPayment | null>;
+   fetchAPaymentByOrderID(orderId: string): Promise<TPayment | null>;
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
    deletePayment(paymentId: string): Promise<void>;
 }

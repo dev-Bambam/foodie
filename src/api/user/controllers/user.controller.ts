@@ -73,12 +73,12 @@ export const makePayment = async (req: Request, res: Response) => {
 };
 
 export const confirmPayment = async (req: Request, res: Response) => {
-   const orderId  = req.query.orderId as string
-   const response = await CustomerService.confirmPayment(orderId)
+   const reference  = req.query.reference as string
+   const message = await CustomerService.confirmPayment(reference)
    res.status(200).json({
       status: 'success',
       data: {
-         response
+         message
       }
    })
 };

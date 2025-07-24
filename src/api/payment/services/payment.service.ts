@@ -33,10 +33,9 @@ export class PaymentService implements paymenttype.IPaymentService {
       return authorization_url;
    }
 
-   async confirmPayment(orderId: string): Promise<paymenttype.TPayment> {
-      const payment = await this.PaymentRepo.fetchAPaymentByOrderID(orderId);
+   async confirmPayment(reference: string): Promise<paymenttype.TPayment> {
+      const payment = await this.PaymentRepo.fetchAPaymentByReference(reference);
       console.log(`payment:${JSON.stringify(payment)}`)
-      const reference = payment?.paymentGatewayResponse?.data.reference;
       console.log(`reference coming from payment.service.ts:${reference}`);
       const verifyPayment = await this.PaymentGateway.verifyPayment(reference!);
       const paymentUpdate = await this.PaymentRepo.updatePayment(payment!.id, {
