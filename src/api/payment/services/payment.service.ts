@@ -22,17 +22,22 @@ export class PaymentService implements paymenttype.IPaymentService {
          userEmail!,
          orderId
       );
-      await this.PaymentRepo.updatePayment(id, {
+
+      const updated = await this.PaymentRepo.updatePayment(id, {
          paymentGatewayResponse: paymentGatewayRes,
       });
 
+      console.log(JSON.stringify(updated));
+      // console.log(JSON.stringify(id), newPayment.id);
       const authorization_url = paymentGatewayRes.data.authorization_url;
       return authorization_url;
    }
 
    async confirmPayment(orderId: string): Promise<paymenttype.TPayment> {
       const payment = await this.PaymentRepo.fetchAPaymentByOrderID(orderId);
+      console.log(`payment:${JSON.stringify(payment)}`)
       const reference = payment?.paymentGatewayResponse?.data.reference;
+      console.log(`reference coming from payment.service.ts:${reference}`);
       const verifyPayment = await this.PaymentGateway.verifyPayment(reference!);
       const paymentUpdate = await this.PaymentRepo.updatePayment(payment!.id, {
          paymentGatewayResponse: verifyPayment,
@@ -74,23 +79,23 @@ export class PaymentService implements paymenttype.IPaymentService {
       return crypto.createHmac("sha512", secretKey).update(payload).digest("hex");
    }
 
-  async processChargeWebhook(data: any, update: paymenttype.update): Promise<void> {
-   const { metadata } = data;
+   async processChargeWebhook(data: any, update: paymenttype.update): Promise<void> {
+      const { metadata } = data;
 
-   if (metadata && metadata.orderId) {
-      const payment = await this.PaymentRepo.fetchAPaymentByOrderID(metadata.orderId);
-      if (payment && payment.status !== "successful") {
-         await this.PaymentRepo.updatePayment(payment.id, {
-            status: update.status1 as "successful",
-            paymentGatewayResponse: {
-               status: update.status2,
-               message: update.message,
-               data,
-            },
-         });
+      if (metadata && metadata.orderId) {
+         const payment = await this.PaymentRepo.fetchAPaymentByOrderID(metadata.orderId);
+         if (payment && payment.status !== "successful") {
+            await this.PaymentRepo.updatePayment(payment.id, {
+               status: update.status1 as "successful",
+               paymentGatewayResponse: {
+                  status: update.status2,
+                  message: update.message,
+                  data,
+               },
+            });
+         }
       }
    }
-  }
 
    async handlePaymentWebhook(payload: any, signature: string): Promise<void> {
       const expectedHash = this.generateWebhookHash(JSON.stringify(payload.body));
@@ -122,6 +127,4 @@ export class PaymentService implements paymenttype.IPaymentService {
          throw new Error("Invlaid paystack webhook signature");
       }
    }
-
- 
 }

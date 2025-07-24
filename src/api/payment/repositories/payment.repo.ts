@@ -34,12 +34,12 @@ export class PaymentRepo implements paymenttype.IPaymentRepo {
    }
 
    async deletePayment(paymentId: string): Promise<void> {
-       await Payment.deleteOne({id: paymentId})
+      await Payment.deleteOne({_id: paymentId})
    }
 
    async updatePayment(paymentId: string, paymentUpdate: paymenttype.TUpdatePayment): Promise<paymenttype.TPayment> {
       const updatedPayment = await Payment.findOneAndUpdate(
-         { id: paymentId },
+         { _id: paymentId },
          paymentUpdate,
          { new: true }
       );
@@ -47,8 +47,10 @@ export class PaymentRepo implements paymenttype.IPaymentRepo {
    }
 
    async fetchAPaymentByOrderID(orderId: string): Promise<paymenttype.TPayment | null> {
-      const payment = await Payment.findOne({ orderId })
-      
+      const payment = await Payment.findOne({ orderId: orderId })
+      if (!payment) {
+         console.log(`payment for orderId:${orderId} not found`)
+      }
       return payment 
    }
 }
