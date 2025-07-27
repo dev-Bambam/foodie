@@ -80,3 +80,25 @@ export const confirmPayment = async (req: Request, res: Response) => {
       }
    })
 }
+
+export const fetchAPayment = async (req: Request, res: Response) => {
+   const { paymentId } = req.params 
+   const payment = await AdminService.fetchAPayment(paymentId)
+   res.status(200).json({
+      status: 'success',
+      data: {
+         payment
+      }
+   })
+}
+
+export const fetchAllPayment = async (req: Request, res: Response) => {
+   const status =  req.query.status as 'pending' | 'successful' | 'failed'
+   const allPayment = await AdminService.fetchAllPayment(status)
+   res.status(200).json({
+      status: 'success',
+      data: {
+         allPayment
+      }
+   })
+}

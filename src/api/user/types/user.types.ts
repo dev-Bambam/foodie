@@ -58,6 +58,8 @@ export interface IAdminService {
 
    // CRUD on Payment
    confirmPayment(paymentId: string): Promise<paymenttype.TPayment>;
+   fetchAPayment(paymentId: string): Promise<paymenttype.TPayment | null>
+   fetchAllPayment<T extends paymenttype.TPayment['status']>(status: T): Promise<paymenttype.TPayment [] | null>
 
    // CRUD on Customer/ User
    getAllCustomers(): Promise<TUser[]>;
