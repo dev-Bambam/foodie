@@ -34,7 +34,7 @@ container.register<IMenuService>('IMenuService', {
 container.register<IOrderRepo>('IOrderRepo', {
     useClass: OrderRepo
 })
-container.register<IOrderService>('IOderService', {
+container.register<IOrderService>('IOrderService', {
     useClass: OrderService
 })
 

@@ -5,6 +5,10 @@ import * as paymenttype from "../../payment/types/payment.type";
 import { injectable, inject } from "tsyringe";
 import { IAuthService } from "../../auth/types/auth.types"
 
+/**
+ * Service class for admin-related business logic (admin registration, user management, etc.).
+ * Handles all admin domain operations and interacts with repositories.
+ */
 @injectable()
 export class AdminService implements usertype.IAdminService {
    constructor(

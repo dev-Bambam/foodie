@@ -4,6 +4,11 @@ import { injectable, inject } from "tsyringe";
 import { UserRepository } from "../../user/repositories/user.repo";
 import crypto from "node:crypto";
 
+/**
+ * Service class for handling payment-related operations, including creation, confirmation,
+ * retrieval, updating, deletion, webhook processing, and integration with payment gateways.
+ * Implements the IPaymentService interface and uses dependency injection for repositories and gateways.
+ */
 @injectable()
 export class PaymentService implements paymenttype.IPaymentService {
    constructor(
@@ -12,6 +17,11 @@ export class PaymentService implements paymenttype.IPaymentService {
       @inject("IUserRepository") private UserRepo: UserRepository
    ) {}
 
+   /**
+    * Creates a new payment and initializes it with the payment gateway.
+    * @param payment - The payment input data.
+    * @returns The authorization URL from the payment gateway.
+    */
    async createPayment(payment: paymenttype.TPaymentInput): Promise<string> {
       const newPayment = await this.PaymentRepo.createPayment(payment);
       const { id, amount, userId, orderId } = newPayment;
@@ -33,9 +43,14 @@ export class PaymentService implements paymenttype.IPaymentService {
       return authorization_url;
    }
 
+   /**
+    * Confirms a payment by verifying it with the payment gateway and updating its status.
+    * @param reference - The payment reference to verify.
+    * @returns The updated payment object.
+    */
    async confirmPayment(reference: string): Promise<paymenttype.TPayment> {
       const payment = await this.PaymentRepo.fetchAPaymentByReference(reference);
-      console.log(`payment:${JSON.stringify(payment)}`)
+      console.log(`payment:${JSON.stringify(payment)}`);
       console.log(`reference coming from payment.service.ts:${reference}`);
       const verifyPayment = await this.PaymentGateway.verifyPayment(reference!);
       const paymentUpdate = await this.PaymentRepo.updatePayment(payment!.id, {
@@ -45,6 +60,12 @@ export class PaymentService implements paymenttype.IPaymentService {
       return paymentUpdate;
    }
 
+   /**
+    * Fetches a single payment by its ID.
+    * @param paymentId - The ID of the payment to fetch.
+    * @throws NotFoundError if the payment is not found.
+    * @returns The payment object.
+    */
    async fetchAPayment(paymentId: string): Promise<paymenttype.TPayment> {
       const payment = await this.PaymentRepo.fetchAPayment(paymentId);
       if (!payment) {
@@ -53,6 +74,11 @@ export class PaymentService implements paymenttype.IPaymentService {
       return payment;
    }
 
+   /**
+    * Fetches all payments, optionally filtered by status.
+    * @param status - Optional payment status to filter by.
+    * @returns An array of payment objects.
+    */
    async fetchAllPayment<T extends paymenttype.TPayment["status"]>(
       status?: T
    ): Promise<paymenttype.TPayment[]> {
@@ -60,10 +86,21 @@ export class PaymentService implements paymenttype.IPaymentService {
       return allPayment;
    }
 
+   /**
+    * Deletes a payment by its ID.
+    * @param paymentId - The ID of the payment to delete.
+    * @returns A promise that resolves when the payment is deleted.
+    */
    async deletePayment(paymentId: string): Promise<void> {
       return await this.PaymentRepo.deletePayment(paymentId);
    }
 
+   /**
+    * Updates a payment with new data.
+    * @param paymentId - The ID of the payment to update.
+    * @param paymentUpdate - The update data for the payment.
+    * @returns The updated payment object.
+    */
    async updatePayment(
       paymentId: string,
       paymentUpdate: paymenttype.TUpdatePayment
@@ -73,11 +110,22 @@ export class PaymentService implements paymenttype.IPaymentService {
       return updatedPayment;
    }
 
+   /**
+    * Generates a HMAC hash for webhook payload verification.
+    * @param payload - The webhook payload as a string.
+    * @returns The generated hash string.
+    */
    public generateWebhookHash(payload: string): string {
       const secretKey = process.env.PAYSTACK_TEST_KEY!;
       return crypto.createHmac("sha512", secretKey).update(payload).digest("hex");
    }
 
+   /**
+    * Processes a charge webhook event and updates the payment status accordingly.
+    * @param data - The webhook data payload.
+    * @param update - The update object containing status and message.
+    * @returns A promise that resolves when processing is complete.
+    */
    async processChargeWebhook(data: any, update: paymenttype.update): Promise<void> {
       const { metadata } = data;
 
@@ -96,6 +144,13 @@ export class PaymentService implements paymenttype.IPaymentService {
       }
    }
 
+   /**
+    * Handles incoming payment webhooks, verifies signature, and processes events.
+    * @param payload - The webhook payload.
+    * @param signature - The signature to verify the webhook.
+    * @throws Error if the signature is invalid or the event is unhandled.
+    * @returns A promise that resolves when the webhook is handled.
+    */
    async handlePaymentWebhook(payload: any, signature: string): Promise<void> {
       const expectedHash = this.generateWebhookHash(JSON.stringify(payload.body));
       if (signature && expectedHash === signature) {
@@ -127,8 +182,13 @@ export class PaymentService implements paymenttype.IPaymentService {
       }
    }
 
+   /**
+    * Saves a payment by its ID.
+    * @param paymentId - The ID of the payment to save.
+    * @returns The saved payment object.
+    */
    async savePayment(paymentId: string): Promise<paymenttype.TPayment> {
-      const payment = await this.PaymentRepo.savePayment(paymentId)
-      return payment
+      const payment = await this.PaymentRepo.savePayment(paymentId);
+      return payment;
    }
 }
