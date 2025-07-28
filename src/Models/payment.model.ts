@@ -7,7 +7,7 @@ const paymentSchema = new Schema<TPayment>({
    amount: { type: Number, required: true, min: 0 },
    status: {
       type: String,
-      enum: ["pending", "completed", "failed"],
+      enum: ["pending", "successful", "failed"],
       default: "pending",
    },
    paymentMethod: { type: String, enum: ["bank transfer", "cash"], required: true },

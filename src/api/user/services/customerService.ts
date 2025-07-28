@@ -76,11 +76,22 @@ export class CustomerService implements ICustomerService {
       const payment = await this.PaymentService.confirmPayment(reference)
       const orderId = payment.orderId;
       if (payment.status as 'failed' === 'failed') {
+         payment.status = 'failed'
          return `Payment failed for order:${orderId}`
       } else if (payment.status as 'pending' === 'pending') {
+         payment.status = 'pending';
          return `Payment still pending for order:${orderId}, please try again`
       }
 
-      return `Payment successful for order:${orderId}, thanks for your patronage`
+      payment.status = 'successful';
+      
+      await this.PaymentService.savePayment(payment.id)
+
+      return `Payment successful:${
+         {
+            orderId: orderId,
+            paymentId: payment.id
+         }
+      }`
    }
 }

@@ -126,4 +126,9 @@ export class PaymentService implements paymenttype.IPaymentService {
          throw new Error("Invlaid paystack webhook signature");
       }
    }
+
+   async savePayment(paymentId: string): Promise<paymenttype.TPayment> {
+      const payment = await this.PaymentRepo.savePayment(paymentId)
+      return payment
+   }
 }

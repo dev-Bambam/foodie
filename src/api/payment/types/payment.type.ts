@@ -32,17 +32,16 @@ export type update = {
 }
 
 export interface IPaymentService {
-   createPayment(
-      payment: TPaymentInput
-   ): Promise<string>;
+   createPayment(payment: TPaymentInput): Promise<string>;
    confirmPayment(reference: string): Promise<TPayment>;
    fetchAllPayment<T extends TPayment["status"]>(status?: T): Promise<TPayment[]>;
    fetchAPayment(paymentId: string): Promise<TPayment>;
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
    deletePayment(paymentId: string): Promise<void>;
-   generateWebhookHash(payload: string): string
-   processChargeWebhook(data: any, update:update): Promise<void>
-   handlePaymentWebhook(payload: any, signature: string): Promise<void>
+   generateWebhookHash(payload: string): string;
+   processChargeWebhook(data: any, update: update): Promise<void>;
+   handlePaymentWebhook(payload: any, signature: string): Promise<void>;
+   savePayment(paymentId: string): Promise<TPayment>;
 }
 
 export interface IPaymentGateway {
@@ -59,4 +58,5 @@ export interface IPaymentRepo {
    fetchAPaymentByOrderID(orderId: string): Promise<TPayment | null>;
    updatePayment(paymentId: string, paymentUpdate: TUpdatePayment): Promise<TPayment>;
    deletePayment(paymentId: string): Promise<void>;
+   savePayment(paymentId: string): Promise<TPayment>
 }

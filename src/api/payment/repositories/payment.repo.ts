@@ -55,10 +55,17 @@ export class PaymentRepo implements paymenttype.IPaymentRepo {
    }
 
    async fetchAPaymentByReference(reference: string): Promise<paymenttype.TPayment | null> {
-      const payment = Payment.findOne({
+      const payment = await Payment.findOne({
          'paymentGatewayResponse.data.reference': reference
       })
 
       return payment
+   }
+
+   async savePayment(paymentId: string): Promise<paymenttype.TPayment> {
+      const payment = await Payment.findById(paymentId)
+      await payment?.save()
+
+      return payment as paymenttype.TPayment
    }
 }
