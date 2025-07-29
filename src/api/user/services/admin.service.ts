@@ -13,7 +13,7 @@ import { IAuthService } from "../../auth/types/auth.types"
 export class AdminService implements usertype.IAdminService {
    constructor(
       @inject("IMenuService") private MenuService: menutype.IMenuService,
-      @inject("IOderService") private OrderService: ordertype.IOrderService,
+      @inject("IOrderService") private OrderService: ordertype.IOrderService,
       @inject("IUserRepository") private UserRepo: usertype.IUserRepository,
       @inject("IAuthService") private AuthService: IAuthService,
       @inject('IPaymentService') private PaymentService: paymenttype.IPaymentService
