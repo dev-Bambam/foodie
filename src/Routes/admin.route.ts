@@ -21,6 +21,6 @@ router.put('/update-order/:orderId', AdminController.updateOrder)
 router.put('/update-menu/:menuId', AdminController.updateMenu)
 
 // all DELETE endpoints
-router.delete('/delete-menu', AdminController.deleteMenu)
+router.delete('/delete-menu/:menuId', AdminController.deleteMenu)
 
 export default router

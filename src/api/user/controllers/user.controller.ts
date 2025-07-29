@@ -18,11 +18,11 @@ export const register = async (req: Request, res: Response) => {
     * @param next Express next middleware function
     */
    const newCustomer = req.body;
-   const customer = await CustomerService.register(newCustomer);
+   const user = await CustomerService.register(newCustomer);
    res.status(201).json({
       status: "success",
       data: {
-         customer,
+         user,
       },
    });
 };
@@ -35,11 +35,11 @@ export const login = async (req: Request, res: Response) => {
     * @param next Express next middleware function
     */
    const { email, password } = req.body;
-   const customer = await CustomerService.login({ email, password });
+   const user = await CustomerService.login({ email, password });
    res.status(200).json({
       status: "success",
       data: {
-         customer,
+         user,
       },
    });
 };
