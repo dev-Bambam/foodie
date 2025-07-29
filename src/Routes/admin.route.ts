@@ -4,23 +4,28 @@ import * as AdminController from '../api/user/controllers/admin.controller'
 const router = Router()
 
 
-// all POST endpointe
-router.post('/create-menu', AdminController.createMenu)
+
+// Auth endpoints
 router.post('/login', AdminController.login)
 
+// all Menu endpoits
+router.post('/create-menu', AdminController.createMenu)
+router.put('/update-menu/:menuId', AdminController.updateMenu)
+router.delete('/delete-menu/:menuId', AdminController.deleteMenu)
 
-// all GET enpoints
-router.get('/fetch-all-order', AdminController.fetchAllOrder)
+
+// all CUSTOMER enpoints
 router.get('/fetch-all-customer', AdminController.getAllCustomers)
+
+// all PAYMENT endpoint
 router.get('/confirm/payment', AdminController.confirmPayment)
 router.get("/fetch-a-payment/:paymentId", AdminController.fetchAPayment);
 router.get("/fetch-all-payment", AdminController.fetchAllPayment);
 
-// all PUT enpoints
+// all ORDER enpoints
 router.put('/update-order/:orderId', AdminController.updateOrder)
-router.put('/update-menu/:menuId', AdminController.updateMenu)
+router.get('/fetch-all-order', AdminController.fetchAllOrder)
 
-// all DELETE endpoints
-router.delete('/delete-menu/:menuId', AdminController.deleteMenu)
+
 
 export default router

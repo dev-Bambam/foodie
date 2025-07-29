@@ -6,7 +6,7 @@ import {inject, injectable} from 'tsyringe'
 export class MenuService implements menutype.IMenuService{
     constructor(@inject('IMenuRepo') private MenuRepo: menutype.IMenuRepo) { }
     
-    async browseMenus(category?: string): Promise<menutype.IMenuItem[] | null> {
+    async browseMenus(category?: string): Promise<menutype.TMenuItem[] | null> {
         const menuCategory = category
         let menus
         if (menuCategory) {
@@ -20,22 +20,22 @@ export class MenuService implements menutype.IMenuService{
         menus = await this.MenuRepo.getAllMenu()
         return menus
     }
-    async createMenu(menu: menutype.TCreateMenuInput): Promise<menutype.IMenuItem> {
+    async createMenu(menu: menutype.TCreateMenuInput): Promise<menutype.TMenuItem> {
         const newMenu = await this.MenuRepo.createMenu(menu)
 
         return newMenu
     }
-    async getMenuDetail(menuId: string): Promise<menutype.IMenuItem | null> {
+    async getMenuDetail(menuId: string): Promise<menutype.TMenuItem | null> {
         const menu = await this.MenuRepo.findMenuById(menuId)
         if (!menu) {
             throw new NotFoundError('Menu not found')
         }
         return menu
     }
-    async updateMenu(menuId: string, menuObject: menutype.TUpdateMenuItem): Promise<menutype.IMenuItem> {
+    async updateMenu(menuId: string, menuObject: menutype.TUpdateMenuItem): Promise<menutype.TMenuItem> {
         const updatedMenu = await this.MenuRepo.updateMenu(menuId, menuObject)
 
-        return updatedMenu as menutype.IMenuItem
+        return updatedMenu as menutype.TMenuItem
     }
     async deleteMenu(menuId: string): Promise<void> {
         return  await this.MenuRepo.deleteMenuById(menuId)

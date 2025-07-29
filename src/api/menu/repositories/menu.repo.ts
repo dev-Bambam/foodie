@@ -16,7 +16,7 @@ export class MenuRepo implements menutype.IMenuRepo{
     async deleteMenuById(menuId: string): Promise<void> {
         await Menu.findByIdAndDelete(menuId)
     }
-    async createMenu(menu: menutype.TCreateMenuInput): Promise<menutype.IMenuItem> {
+    async createMenu(menu: menutype.TCreateMenuInput): Promise<menutype.TMenuItem> {
         return await Menu.create(menu)
     }
     async updateMenu(menuId: string, menuObject: menutype.TUpdateMenuItem): Promise<menutype.IMenuItem | null > {

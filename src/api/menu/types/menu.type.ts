@@ -19,10 +19,10 @@ export type TCreateMenuInput = Required<IMenuItem>
 export type TUpdateMenuItem = Partial<IMenuItem>
 
 export interface IMenuService {
-   browseMenus(category?: string): Promise<IMenuItem[] | null >;
-   getMenuDetail(menuId: string): Promise<IMenuItem | null >;
-   createMenu(menu:TCreateMenuInput): Promise<IMenuItem>;
-   updateMenu(menuId: string, menuObject: TUpdateMenuItem): Promise<IMenuItem>;
+   browseMenus(category?: string): Promise<TMenuItem[] | null >;
+   getMenuDetail(menuId: string): Promise<TMenuItem | null >;
+   createMenu(menu:TCreateMenuInput): Promise<TMenuItem>;
+   updateMenu(menuId: string, menuObject: TUpdateMenuItem): Promise<TMenuItem>;
    deleteMenu(menuId: string): Promise<void>;
 }
 
@@ -31,5 +31,5 @@ export interface IMenuRepo {
    getAllMenu(category?: string): Promise<IMenuItem[] | null>
    deleteMenuById(menuId: string): Promise<void>
    updateMenu(menuId: string, menuObject: TUpdateMenuItem): Promise<IMenuItem | null >
-   createMenu(menu: TCreateMenuInput): Promise <IMenuItem>
+   createMenu(menu: TCreateMenuInput): Promise <TMenuItem>
 }
