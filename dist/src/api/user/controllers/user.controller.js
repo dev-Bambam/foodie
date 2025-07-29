@@ -1,12 +1,22 @@
 "use strict";
+/**
+ * Controller for user-related operations (registration, login, profile, etc.).
+ * Handles HTTP requests and responses for user endpoints.
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.makePayment = exports.placeOrder = exports.getMenuDetails = exports.browseMenus = exports.login = exports.register = void 0;
+exports.confirmPayment = exports.makePayment = exports.placeOrder = exports.getMenuDetails = exports.browseMenus = exports.login = exports.register = void 0;
 const tsyringe_1 = require("tsyringe");
 // Resolve the service from the DI container
-const customerService = tsyringe_1.container.resolve("ICustomerService");
+const CustomerService = tsyringe_1.container.resolve("ICustomerService");
 const register = async (req, res) => {
+    /**
+     * Registers a new user.
+     * @param req Express request object
+     * @param res Express response object
+     * @param next Express next middleware function
+     */
     const newCustomer = req.body;
-    const customer = await customerService.register(newCustomer);
+    const customer = await CustomerService.register(newCustomer);
     res.status(201).json({
         status: "success",
         data: {
@@ -16,8 +26,14 @@ const register = async (req, res) => {
 };
 exports.register = register;
 const login = async (req, res) => {
+    /**
+     * Logs in a user.
+     * @param req Express request object
+     * @param res Express response object
+     * @param next Express next middleware function
+     */
     const { email, password } = req.body;
-    const customer = await customerService.login({ email, password });
+    const customer = await CustomerService.login({ email, password });
     res.status(200).json({
         status: "success",
         data: {
@@ -27,9 +43,15 @@ const login = async (req, res) => {
 };
 exports.login = login;
 const browseMenus = async (req, res) => {
+    /**
+     * Fetches the current user's profile.
+     * @param req Express request object
+     * @param res Express response object
+     * @param next Express next middleware function
+     */
     const category = req.query.category;
     console.log(`category:${category}`);
-    const menus = await customerService.browseMenus(category);
+    const menus = await CustomerService.browseMenus(category);
     res.status(200).json({
         status: "success",
         data: {
@@ -39,8 +61,14 @@ const browseMenus = async (req, res) => {
 };
 exports.browseMenus = browseMenus;
 const getMenuDetails = async (req, res) => {
+    /**
+     * Updates the current user's profile.
+     * @param req Express request object
+     * @param res Express response object
+     * @param next Express next middleware function
+     */
     const { menuId } = req.params;
-    const menu = await customerService.getMenuDetails(menuId);
+    const menu = await CustomerService.getMenuDetails(menuId);
     res.status(200).json({
         status: "success",
         data: {
@@ -51,23 +79,34 @@ const getMenuDetails = async (req, res) => {
 exports.getMenuDetails = getMenuDetails;
 const placeOrder = async (req, res) => {
     const newOrder = req.body;
-    const order = await customerService.placeOrder(newOrder);
+    const order = await CustomerService.placeOrder(newOrder);
     res.status(201).json({
         status: "success",
         data: {
-            order
-        }
+            order,
+        },
     });
 };
 exports.placeOrder = placeOrder;
 const makePayment = async (req, res) => {
     const paymentData = req.body;
-    const payment_url = await customerService.makePayment(paymentData);
+    const payment_url = await CustomerService.makePayment(paymentData);
     res.status(200).json({
         status: "success",
         data: {
-            payment_url
-        }
+            payment_url,
+        },
     });
 };
 exports.makePayment = makePayment;
+const confirmPayment = async (req, res) => {
+    const reference = req.query.reference;
+    const message = await CustomerService.confirmPayment(reference);
+    res.status(200).json({
+        status: "success",
+        data: {
+            message,
+        },
+    });
+};
+exports.confirmPayment = confirmPayment;

@@ -18,10 +18,10 @@ let PaystackService = class PaystackService {
         this.baseUrl = "https://api.paystack.co";
     }
     async initializePayment(amount, email, metadata) {
-        const response = await axios_1.default.post(`${this.baseUrl}/transactions/initialize`, {
+        const response = await axios_1.default.post(`${this.baseUrl}/transaction/initialize`, {
             email,
             amount: amount * 100,
-            callback_url: `${process.env.PORT}/payment-success?transactionId=${metadata}`,
+            // callback_url: `${process.env.PORT}/confirm-payment?orderId=${metadata}`,
             metadata: {
                 orderId: metadata
             }
@@ -40,8 +40,6 @@ let PaystackService = class PaystackService {
             },
         });
         return response.data;
-    }
-    async handleWebHook(payload) {
     }
 };
 exports.PaystackService = PaystackService;

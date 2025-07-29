@@ -32,14 +32,28 @@ class PaymentRepo {
         return allPayment;
     }
     async deletePayment(paymentId) {
-        await payment_model_1.default.deleteOne({ id: paymentId });
+        await payment_model_1.default.deleteOne({ _id: paymentId });
     }
     async updatePayment(paymentId, paymentUpdate) {
-        const updatedPayment = await payment_model_1.default.findOneAndUpdate({ id: paymentId }, paymentUpdate, { new: true });
+        const updatedPayment = await payment_model_1.default.findOneAndUpdate({ _id: paymentId }, paymentUpdate, { new: true });
         return updatedPayment;
     }
     async fetchAPaymentByOrderID(orderId) {
-        const payment = await payment_model_1.default.findOne({ orderId });
+        const payment = await payment_model_1.default.findOne({ orderId: orderId });
+        if (!payment) {
+            console.log(`payment for orderId:${orderId} not found`);
+        }
+        return payment;
+    }
+    async fetchAPaymentByReference(reference) {
+        const payment = await payment_model_1.default.findOne({
+            'paymentGatewayResponse.data.reference': reference
+        });
+        return payment;
+    }
+    async savePayment(paymentId) {
+        const payment = await payment_model_1.default.findById(paymentId);
+        await payment?.save();
         return payment;
     }
 }

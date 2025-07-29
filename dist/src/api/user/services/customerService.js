@@ -15,6 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomerService = void 0;
 const CustomError_1 = require("../../../Utils/Error/CustomError");
 const tsyringe_1 = require("tsyringe");
+/**
+ * Service class for customer-related business logic (user registration, profile, etc.).
+ * Handles all customer domain operations and interacts with repositories.
+ */
 let CustomerService = class CustomerService {
     constructor(userRepository, MenuService, OrderService, PaymentService, AuthService) {
         this.userRepository = userRepository;
@@ -57,13 +61,28 @@ let CustomerService = class CustomerService {
         const payment_url = await this.PaymentService.createPayment(paymentInput);
         return payment_url;
     }
+    async confirmPayment(reference) {
+        const payment = await this.PaymentService.confirmPayment(reference);
+        const orderId = payment.orderId;
+        if (payment.status === "failed") {
+            payment.status = "failed";
+            return `Payment failed for order:${orderId}`;
+        }
+        else if (payment.status === "pending") {
+            payment.status = "pending";
+            return `Payment still pending for order:${orderId}, please try again`;
+        }
+        payment.status = "successful";
+        await this.PaymentService.savePayment(payment.id);
+        return `Payment successful: orderId:${orderId}, paymentId:${payment.id}`;
+    }
 };
 exports.CustomerService = CustomerService;
 exports.CustomerService = CustomerService = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("IUserRepository")),
     __param(1, (0, tsyringe_1.inject)("IMenuService")),
-    __param(2, (0, tsyringe_1.inject)("IOderService")),
+    __param(2, (0, tsyringe_1.inject)("IOrderService")),
     __param(3, (0, tsyringe_1.inject)("IPaymentService")),
     __param(4, (0, tsyringe_1.inject)("IAuthService")),
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object])

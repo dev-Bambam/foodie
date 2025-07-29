@@ -27,7 +27,7 @@ tsyringe_1.container.register('IMenuService', {
 tsyringe_1.container.register('IOrderRepo', {
     useClass: order_repo_1.OrderRepo
 });
-tsyringe_1.container.register('IOderService', {
+tsyringe_1.container.register('IOrderService', {
     useClass: order_service_1.OrderService
 });
 // Register Payment service

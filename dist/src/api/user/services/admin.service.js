@@ -51,6 +51,10 @@ const menutype = __importStar(require("../../menu/types/menu.type"));
 const ordertype = __importStar(require("../../order/types/order.type"));
 const paymenttype = __importStar(require("../../payment/types/payment.type"));
 const tsyringe_1 = require("tsyringe");
+/**
+ * Service class for admin-related business logic (admin registration, user management, etc.).
+ * Handles all admin domain operations and interacts with repositories.
+ */
 let AdminService = class AdminService {
     constructor(MenuService, OrderService, UserRepo, AuthService, PaymentService) {
         this.MenuService = MenuService;
@@ -86,6 +90,14 @@ let AdminService = class AdminService {
         const payment = await this.PaymentService.confirmPayment(paymentId);
         return payment;
     }
+    async fetchAPayment(paymentId) {
+        const payment = await this.PaymentService.fetchAPayment(paymentId);
+        return payment;
+    }
+    async fetchAllPayment(status) {
+        const allPayment = await this.PaymentService.fetchAllPayment(status);
+        return allPayment;
+    }
     // CRUD on Customer/ User
     async getAllCustomers() {
         const allCustomer = await this.UserRepo.fetchAllCustomer();
@@ -96,7 +108,7 @@ exports.AdminService = AdminService;
 exports.AdminService = AdminService = __decorate([
     (0, tsyringe_1.injectable)(),
     __param(0, (0, tsyringe_1.inject)("IMenuService")),
-    __param(1, (0, tsyringe_1.inject)("IOderService")),
+    __param(1, (0, tsyringe_1.inject)("IOrderService")),
     __param(2, (0, tsyringe_1.inject)("IUserRepository")),
     __param(3, (0, tsyringe_1.inject)("IAuthService")),
     __param(4, (0, tsyringe_1.inject)('IPaymentService')),
