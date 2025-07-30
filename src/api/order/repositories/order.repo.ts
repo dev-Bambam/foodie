@@ -7,15 +7,17 @@ export class OrderRepo implements ordertype.IOrderRepo {
    async createOrder(orderInput: ordertype.TPlaceOrderInput): Promise<ordertype.TOrderOutput> {
       const newOrder = await Order.create(orderInput);
 
-      return {
-         id: newOrder.id,
-         userId: newOrder.userId,
-         items: newOrder.items,
-         totalPrice: newOrder.totalPrice,
-         deliveryAddress: newOrder.deliveryAddress,
-         status: newOrder.status as "pending",
-         createdAt: newOrder.createdAt
-      };
+      // return {
+      //    id: newOrder.id,
+      //    userId: newOrder.userId,
+      //    items: newOrder.items,
+      //    totalPrice: newOrder.totalPrice,
+      //    deliveryAddress: newOrder.deliveryAddress,
+      //    status: newOrder.status as "pending",
+      //    createdAt: newOrder.createdAt
+      // };
+
+      return newOrder as ordertype.TOrderOutput
    }
    async fetchAllOrder<T extends ordertype.TOrder["status"]>(
       status?: T
@@ -23,7 +25,7 @@ export class OrderRepo implements ordertype.IOrderRepo {
       if (status) {
          return await Order.find({ status });
       }
-      return await Order.find();
+      return await Order.find().sort({ createdAt: -1 });
    }
    async updateOrder(
       orderId: string,

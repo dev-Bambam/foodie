@@ -6,9 +6,9 @@ import { injectable } from "tsyringe";
 export class MenuRepo implements menutype.IMenuRepo{
     async getAllMenu(category?: string): Promise<menutype.IMenuItem[] | null> {
         if (!category) {
-            return await Menu.find()
+            return await Menu.find().sort({ createdAt: -1 });
         }
-        return await Menu.find({category: category})
+        return await Menu.find({ category: category }).sort({ createdAt: -1 });
     }
     async findMenuById(menuId: string): Promise<menutype.IMenuItem | null> {
         return await Menu.findById(menuId)

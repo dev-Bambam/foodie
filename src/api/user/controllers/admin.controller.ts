@@ -39,8 +39,8 @@ export const createMenu = async (req: Request, res: Response) => {
 export const updateMenu = async (req: Request, res: Response) => {
    const { menuId } = req.params;
    const menuInput = req.body;
-
    const menu = await AdminService.updateMenu(menuId, menuInput);
+
    res.status(200).json({
       status: "success",
       data: { menu },
@@ -50,7 +50,8 @@ export const updateMenu = async (req: Request, res: Response) => {
 export const deleteMenu = async (req: Request, res: Response) => {
    const { menuId } = req.params;
    await AdminService.deleteMenu(menuId);
-   res.status(204).json({
+   
+   res.status(200).json({
       status: 'success',
       data: {
          message:"menu deleted successfully"

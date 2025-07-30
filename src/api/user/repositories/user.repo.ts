@@ -15,6 +15,6 @@ export class UserRepository implements usertype.IUserRepository {
       return await User.findById(userId)
    }
    async fetchAllCustomer(): Promise<usertype.TUser[]> {
-      return await User.find()
+      return await User.find().sort({ createdAt: -1 });
    }
 }
