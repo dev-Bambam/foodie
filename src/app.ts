@@ -1,5 +1,6 @@
 import express from 'express'
 import { Application } from 'express'
+import {configureCloudinary} from '../config/cloudinary.config'
 import cors from 'cors'
 import mainRouter from './Routes/index.route'
 import webhookRouter from './Routes/webhook.route';
@@ -33,6 +34,7 @@ const corsOptions = {
 
 // CORS applications first
 app.use(cors(corsOptions))
+configureCloudinary()
 
 app.use(express.json({limit: '10mb'}))
 app.use(express.urlencoded({

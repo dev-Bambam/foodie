@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Foodify Image Upload Demo</title>
+      <style>
+         body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 2rem;
+         }
+         .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            padding: 2rem;
+         }
+         h2 {
+            text-align: center;
+         }
+         input[type="file"] {
+            margin-bottom: 1rem;
+         }
+         button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+         }
+         button:disabled {
+            background: #aaa;
+         }
+         .result {
+            margin-top: 1rem;
+            word-break: break-all;
+         }
+         img {
+            max-width: 100%;
+            margin-top: 1rem;
+            border-radius: 4px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <h2>Upload an Image</h2>
+         <form id="uploadForm">
+            <input type="file" id="imageInput" name="image" accept="image/*" required />
+            <button type="submit">Upload</button>
+         </form>
+         <div class="result" id="result"></div>
+         <img id="preview" style="display: none" />
+      </div>
+      <script>
+         const form = document.getElementById("uploadForm");
+         const resultDiv = document.getElementById("result");
+         const previewImg = document.getElementById("preview");
+
+         form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            resultDiv.textContent = "";
+            previewImg.style.display = "none";
+            const fileInput = document.getElementById("imageInput");
+            const file = fileInput.files[0];
+            if (!file) {
+               resultDiv.textContent = "Please select an image.";
+               return;
+            }
+            const formData = new FormData();
+            formData.append("image", file);
+            try {
+               const res = await fetch("https://foodify-wck7.onrender.com/api/upload/image", {
+                  method: "POST",
+                  body: formData,
+               });
+               const data = await res.json();
+               if (res.ok && data.status === "success") {
+                  resultDiv.innerHTML = `<span style='color:green;'>Upload successful!</span><br>URL: <a href='${data.url}' target='_blank'>${data.url}</a>`;
+                  previewImg.src = data.url;
+                  previewImg.style.display = "block";
+               } else {
+                  resultDiv.innerHTML = `<span style='color:red;'>${
+                     data.message || "Upload failed."
+                  }</span>`;
+               }
+            } catch (err) {
+               resultDiv.innerHTML = `<span style='color:red;'>Error: ${err.message}</span>`;
+            }
+         });
+      </script>
+   </body>
+</html>
