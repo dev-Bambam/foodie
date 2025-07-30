@@ -15,6 +15,8 @@ import { IAuthService } from "../../api/auth/types/auth.types";
 import { AuthService } from "../../api/auth/services/auth.service";
 import { PaymentService } from "../../api/payment/services/payment.service";
 import { PaymentRepo } from "../../api/payment/repositories/payment.repo";
+import { IUploadService } from "../../uploads/upload.type";
+import { UploadService } from "../../uploads/upload.service";
 
 // Register UserRepository with the User Service
 container.register<IUserRepository>('IUserRepository', {
@@ -62,4 +64,8 @@ container.register<IAdminService>('IAdminService', {
 // Register Auth Service
 container.register<IAuthService>('IAuthService', {
     useClass: AuthService
+})
+
+container.register<IUploadService>('IUploadService', {
+    useClass: UploadService
 })
