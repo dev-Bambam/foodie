@@ -6,7 +6,7 @@
 import { container } from "tsyringe";
 import { Request, Response } from "express";
 import { IAdminService } from "../types/user.types";
-import { REPLCommand } from "repl";
+
 
 const AdminService = container.resolve<IAdminService>("IAdminService");
 
