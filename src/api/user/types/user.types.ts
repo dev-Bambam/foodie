@@ -23,7 +23,7 @@ export type TUserAddress = {
    state: string;
 };
 
-export type TUserOutput = Omit<TUser, "password" | 'updatedAt'> & { token: string };
+export type TUserOutput = Omit<TUser, "password" | "updatedAt"> & { token: string };
 
 export type TCustomerRegisterationInput = Pick<
    TUser,
@@ -38,8 +38,10 @@ export interface ICustomerService {
    browseMenus(category?: string): Promise<IMenuItem[] | null>;
    getMenuDetails(menuId: string): Promise<IMenuItem | null>;
    placeOrder(input: ordertype.TPlaceOrderInput): Promise<ordertype.TPlaceOrderInput>;
-   makePayment(paymentInput: paymenttype.TPaymentInput): Promise<paymenttype.TPaymentGatewayResData['authorization_url']>;
-   confirmPayment(reference:string): Promise<string>
+   makePayment(
+      paymentInput: paymenttype.TPaymentInput
+   ): Promise<paymenttype.TPaymentGatewayResData["authorization_url"]>;
+   confirmPayment(reference: string): Promise<string>;
 }
 
 // AdminService Interface
@@ -55,15 +57,18 @@ export interface IAdminService {
    createMenu(menuInput: menutype.TCreateMenuInput): Promise<menutype.TMenuItem>;
    updateMenu(menuId: string, menuInput: menutype.TUpdateMenuItem): Promise<menutype.TMenuItem>;
    deleteMenu(menuId: string): Promise<void>;
+   browseMenus(category?: string): Promise<menutype.TMenuItem[] | null>;
+   getMenuDetail(menuId: string): Promise<menutype.TMenuItem | null>;
 
    // CRUD on Payment
    confirmPayment(paymentId: string): Promise<paymenttype.TPayment>;
-   fetchAPayment(paymentId: string): Promise<paymenttype.TPayment | null>
-   fetchAllPayment<T extends paymenttype.TPayment['status']>(status: T): Promise<paymenttype.TPayment [] | null>
+   fetchAPayment(paymentId: string): Promise<paymenttype.TPayment | null>;
+   fetchAllPayment<T extends paymenttype.TPayment["status"]>(
+      status: T
+   ): Promise<paymenttype.TPayment[] | null>;
 
    // CRUD on Customer/ User
    getAllCustomers(): Promise<TUser[]>;
-   
 }
 
 export interface IUserRepository {

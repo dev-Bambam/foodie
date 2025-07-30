@@ -12,15 +12,19 @@ router.post('/login', AdminController.login)
 router.post('/create-menu', AdminController.createMenu)
 router.put('/update-menu/:menuId', AdminController.updateMenu)
 router.delete('/delete-menu/:menuId', AdminController.deleteMenu)
+router.get('/browse-menus', AdminController.browseMenus)
+router.get('/fetch-a-menu/:menuId', AdminController.getMenuDetails)
 
 
 // all CUSTOMER enpoints
 router.get('/fetch-all-customer', AdminController.getAllCustomers)
 
+
 // all PAYMENT endpoint
 router.get('/confirm/payment', AdminController.confirmPayment)
 router.get("/fetch-a-payment/:paymentId", AdminController.fetchAPayment);
 router.get("/fetch-all-payment", AdminController.fetchAllPayment);
+
 
 // all ORDER enpoints
 router.put('/update-order/:orderId', AdminController.updateOrder)

@@ -49,6 +49,14 @@ export class AdminService implements usertype.IAdminService {
    async deleteMenu(menuId: string): Promise<void> {
       return await this.MenuService.deleteMenu(menuId);
    }
+   async browseMenus(category?: string): Promise<menutype.TMenuItem[] | null> {
+      const menus = await this.MenuService.browseMenus(category)
+      return menus
+   }
+   async getMenuDetail(menuId: string): Promise<menutype.TMenuItem | null> {
+      const menu = await this.MenuService.getMenuDetail(menuId)
+      return menu
+   }
 
    // CRUD on Payment
    async confirmPayment(paymentId: string): Promise<paymenttype.TPayment> {
