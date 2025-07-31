@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    # 'build' tells Docker Compose to build an image from the specified Dockerfile.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    # 'container_name' gives your container a readable name.
+    container_name: foodify-container
+    
+    # 'ports' maps the host port to the container port, just like the -p flag.
+    ports:
+      - "5000:5000"
+      
+    # 'env_file' is the key part. It tells Docker Compose to load all variables
+    # from your .env file and inject them into the container.
+    env_file:
+      - .env
+
+    # This 'restart' policy ensures your container automatically restarts if it crashes.
+    restart: always
+
+    # Uncomment the 'volumes' block below for local development.
+    # It syncs your code changes in real-time, so you don't have to rebuild the image every time.
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
