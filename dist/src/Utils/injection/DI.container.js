@@ -12,6 +12,7 @@ const admin_service_1 = require("../../api/user/services/admin.service");
 const auth_service_1 = require("../../api/auth/services/auth.service");
 const payment_service_1 = require("../../api/payment/services/payment.service");
 const payment_repo_1 = require("../../api/payment/repositories/payment.repo");
+const upload_service_1 = require("../../uploads/upload.service");
 // Register UserRepository with the User Service
 tsyringe_1.container.register('IUserRepository', {
     useClass: user_repo_1.UserRepository
@@ -51,4 +52,7 @@ tsyringe_1.container.register('IAdminService', {
 // Register Auth Service
 tsyringe_1.container.register('IAuthService', {
     useClass: auth_service_1.AuthService
+});
+tsyringe_1.container.register('IUploadService', {
+    useClass: upload_service_1.UploadService
 });

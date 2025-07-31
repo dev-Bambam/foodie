@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cloudinary_config_1 = require("../config/cloudinary.config");
 const cors_1 = __importDefault(require("cors"));
 const index_route_1 = __importDefault(require("./Routes/index.route"));
 const webhook_route_1 = __importDefault(require("./Routes/webhook.route"));
@@ -34,6 +35,7 @@ const corsOptions = {
 };
 // CORS applications first
 app.use((0, cors_1.default)(corsOptions));
+(0, cloudinary_config_1.configureCloudinary)();
 app.use(express_1.default.json({ limit: '10mb' }));
 app.use(express_1.default.urlencoded({
     extended: true,

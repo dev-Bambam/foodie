@@ -23,7 +23,7 @@ let UserRepository = class UserRepository {
         return await user_model_1.default.findById(userId);
     }
     async fetchAllCustomer() {
-        return await user_model_1.default.find();
+        return await user_model_1.default.find().sort({ createdAt: -1 });
     }
 };
 exports.UserRepository = UserRepository;

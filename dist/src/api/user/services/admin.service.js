@@ -85,6 +85,14 @@ let AdminService = class AdminService {
     async deleteMenu(menuId) {
         return await this.MenuService.deleteMenu(menuId);
     }
+    async browseMenus(category) {
+        const menus = await this.MenuService.browseMenus(category);
+        return menus;
+    }
+    async getMenuDetail(menuId) {
+        const menu = await this.MenuService.getMenuDetail(menuId);
+        return menu;
+    }
     // CRUD on Payment
     async confirmPayment(paymentId) {
         const payment = await this.PaymentService.confirmPayment(paymentId);

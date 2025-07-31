@@ -15,9 +15,9 @@ const tsyringe_1 = require("tsyringe");
 let MenuRepo = class MenuRepo {
     async getAllMenu(category) {
         if (!category) {
-            return await menu_model_1.default.find();
+            return await menu_model_1.default.find().sort({ createdAt: -1 });
         }
-        return await menu_model_1.default.find({ category: category });
+        return await menu_model_1.default.find({ category: category }).sort({ createdAt: -1 });
     }
     async findMenuById(menuId) {
         return await menu_model_1.default.findById(menuId);
