@@ -79,9 +79,11 @@
                   body: formData,
                });
                const data = await res.json();
+               console.log(JSON.stringify(data, null, 2));
                if (res.ok && data.status === "success") {
-                  resultDiv.innerHTML = `<span style='color:green;'>Upload successful!</span><br>URL: <a href='${data.url}' target='_blank'>${data.url}</a>`;
-                  previewImg.src = data.url;
+                  resultDiv.innerHTML = `<span style='color:green;'>Upload successful!</span><br>URL: <a href='${data.data.imageUrl}' target='_blank'>${data.data.imageUrl}</a>`;
+                  console.log(`Image URL: ${data.data.imageUrl}`);
+                  previewImg.src = data.data.imageUrl;
                   previewImg.style.display = "block";
                } else {
                   resultDiv.innerHTML = `<span style='color:red;'>${

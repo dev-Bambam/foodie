@@ -1,7 +1,6 @@
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 import { injectable } from "tsyringe";
 import * as uploadtype from "./upload.type";
-import { error } from "console";
 
 @injectable()
 export class UploadService implements uploadtype.IUploadService {
@@ -13,7 +12,7 @@ export class UploadService implements uploadtype.IUploadService {
             { folder: "restaurant_app_images" },
             (error: any, result?: UploadApiResponse) => {
                if (error) {
-                  console.error(`Cloudinary upload stream error:${error}`);
+                  console.error(`Cloudinary upload stream error:${JSON.stringify(error)}`);
                   return reject(error);
                }
                if (!result) {
