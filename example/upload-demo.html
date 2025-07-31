@@ -87,6 +87,7 @@
                   resultDiv.innerHTML = `<span style='color:red;'>${
                      data.message || "Upload failed."
                   }</span>`;
+                  console.log(data);
                }
             } catch (err) {
                resultDiv.innerHTML = `<span style='color:red;'>Error: ${err.message}</span>`;
